@@ -1,0 +1,14 @@
+shader_programs:
+  - name: BASIC
+    shaders:
+      - type: vertex
+        file: basic.vsh
+      - type: fragment
+        file: basic.fsh
+    layout:
+      - type: float3
+        name: vertices
+        normalized: false
+      - type: float3
+        name: color
+        normalized: false
