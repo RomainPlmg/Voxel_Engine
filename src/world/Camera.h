@@ -5,6 +5,8 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
+#include "pch.h"
+
 class Event;
 
 enum Camera_Movement { FORWARD, BACKWARD, LEFT, RIGHT };

@@ -5,10 +5,13 @@
 #ifndef APPLICATION_H
 #define APPLICATION_H
 
+#include "pch.h"
+
 class Window;
 class Renderer;
 class GUI;
 class Event;
+class World;
 
 class Application {
    public:
@@ -36,6 +39,7 @@ class Application {
     std::shared_ptr<Window> m_Window;
     std::shared_ptr<Renderer> m_Renderer;
     std::shared_ptr<GUI> m_GUI;
+    std::shared_ptr<World> m_World;
     bool m_PauseMode;
 
     static Application *m_Instance;

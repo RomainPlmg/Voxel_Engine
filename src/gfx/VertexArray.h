@@ -6,6 +6,7 @@
 #define VERTEXARRAY_H
 
 #include "Buffer.h"
+#include "pch.h"
 
 typedef unsigned int GLenum;
 

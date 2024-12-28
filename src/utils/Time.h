@@ -5,6 +5,8 @@
 #ifndef TIME_H
 #define TIME_H
 
+#include "pch.h"
+
 class Time {
    private:
     static Time* m_Instance;

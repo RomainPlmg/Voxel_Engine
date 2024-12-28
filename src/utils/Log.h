@@ -8,6 +8,8 @@
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <spdlog/spdlog.h>
 
+#include "pch.h"
+
 class Log {
    public:
     Log() = default;

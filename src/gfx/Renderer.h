@@ -5,10 +5,13 @@
 #ifndef RENDERER_H
 #define RENDERER_H
 
+#include "pch.h"
+
 class ShaderProgram;
 class ElementBuffer;
 class Event;
 class Camera;
+typedef unsigned int GLenum;
 
 class Renderer {
    public:
@@ -23,13 +26,14 @@ class Renderer {
     void OnEvent(const Event& event);
 
     /* Setters */
+    void SetPolygonMode(GLenum polygonMode);
     void SetViewport(int width, int height);
     void SetClearColor(float r, float g, float b, float a);
 
     static std::shared_ptr<Renderer> Create();
 
    private:
-    bool m_WireMode;
+    GLenum m_PolygonMode;
     glm::mat4 m_ProjMatrix;
     std::shared_ptr<Camera> m_Camera;
 };

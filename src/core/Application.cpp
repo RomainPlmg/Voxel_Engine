@@ -22,14 +22,18 @@ Application::Application() : m_PauseMode(false) {
     m_Window = Window::Create();
     m_Renderer = Renderer::Create();
     m_GUI = GUI::Create();
+    m_World = World::Create();
 }
 
 void Application::Init() {
     m_Window->Init();
     m_Renderer->Init();
     ShaderProgramLibrary::Init(ASSET_DIRECTORY "shaders/shaders.yaml");
-    INFO_MSG("Engine initialized");
+
+    // To initialize AFTER shaders
     m_GUI->Init();
+    m_World->Init();
+    INFO_MSG("Engine initialized");
 
     m_Window->GetEventDispatcher()->Subscribe(EventCategoryKeyboard, BIND_EVENT_FN(Application::OnEvent));
 }
@@ -39,8 +43,6 @@ void Application::Run() {
         FATAL_MSG("Please, initialize the engine.");
     }
 
-    World world;
-
     m_Renderer->SetClearColor(0.1f, 0.1f, 0.1f, 1.0f);
     while (!m_Window->ShouldClose()) {
         Time::Update();
@@ -48,7 +50,7 @@ void Application::Run() {
 
         m_Renderer->Clear();
 
-        world.Draw();
+        m_World->Draw();
         if (m_PauseMode) {
             m_GUI->Render();
         }

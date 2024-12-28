@@ -5,6 +5,8 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 
+#include "pch.h"
+
 struct WindowProps {
     std::string title;
     int width;

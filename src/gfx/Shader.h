@@ -5,6 +5,8 @@
 #ifndef SHADER_H
 #define SHADER_H
 
+#include "pch.h"
+
 typedef unsigned int GLenum;
 class BufferLayout;
 struct BufferElement;

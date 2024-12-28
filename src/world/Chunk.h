@@ -5,6 +5,7 @@
 #ifndef CHUNK_H
 #define CHUNK_H
 
+#include "pch.h"
 #include "world/Cube.h"
 
 constexpr auto CHUNK_WIDTH = 8;

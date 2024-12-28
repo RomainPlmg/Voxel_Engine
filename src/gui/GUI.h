@@ -5,6 +5,8 @@
 #ifndef GUI_H
 #define GUI_H
 
+#include "pch.h"
+
 class GUI {
    public:
     GUI() = default;

@@ -6,6 +6,7 @@
 #define PCH_H
 
 #include <algorithm>
+#include <array>
 #include <cstdlib>
 #include <filesystem>
 #include <fstream>

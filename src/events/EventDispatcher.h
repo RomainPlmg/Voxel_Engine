@@ -6,6 +6,7 @@
 #define EVENTDISPATCHER_H
 
 #include "Event.h"
+#include "pch.h"
 
 class EventDispatcher {
    public:

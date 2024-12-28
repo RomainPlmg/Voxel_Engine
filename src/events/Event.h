@@ -5,6 +5,8 @@
 #ifndef EVENT_H
 #define EVENT_H
 
+#include "pch.h"
+
 enum class EventType {
     None = 0,
 

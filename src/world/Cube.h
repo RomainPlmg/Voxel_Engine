@@ -5,6 +5,8 @@
 #ifndef CUBE_H
 #define CUBE_H
 
+#include "pch.h"
+
 class ShaderProgram;
 
 class Cube {
@@ -24,7 +26,7 @@ class Cube {
     void SetFaceInvisible(const Face& face);
 
    private:
-    static const std::unordered_map<Face, std::array<float, 24>> m_CommonVertices;
+    static const std::unordered_map<Cube::Face, std::array<float, 24>> m_CommonVertices;
 
     bool m_IsTransparent;
     glm::ivec3 m_ChunkPosition;

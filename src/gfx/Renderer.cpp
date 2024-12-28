@@ -39,7 +39,7 @@ static void OpenGLMessageCallback(unsigned source, unsigned type, unsigned id, u
     FATAL_MSG("Unknown severity level");
 }
 
-Renderer::Renderer() : m_ProjMatrix(glm::mat4(1.0f)), m_Camera(Camera::Create()), m_WireMode(false) {}
+Renderer::Renderer() : m_ProjMatrix(glm::mat4(1.0f)), m_Camera(Camera::Create()), m_PolygonMode(GL_FILL) {}
 
 void Renderer::Init() {
     Application::GetInstance()->GetWindow()->GetEventDispatcher()->Subscribe(EventCategoryApplication,
@@ -100,15 +100,21 @@ void Renderer::OnEvent(const Event& event) {
     if (event.GetType() == EventType::KeyPressed) {
         const auto* keyEvent = dynamic_cast<const KeyPressedEvent*>(&event);
         if (keyEvent->GetKeyCode() == GLFW_KEY_F3) {
-            if (!m_WireMode) {
-                glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-                m_WireMode = true;
+            if (m_PolygonMode == GL_FILL) {
+                SetPolygonMode(GL_LINE);
             } else {
-                glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-                m_WireMode = false;
+                SetPolygonMode(GL_FILL);
             }
         }
     }
+}
+
+void Renderer::SetPolygonMode(GLenum polygonMode) {
+    if (m_PolygonMode == polygonMode) {
+        return;
+    }
+    m_PolygonMode = polygonMode;
+    glPolygonMode(GL_FRONT_AND_BACK, polygonMode);
 }
 
 void Renderer::SetViewport(const int width, const int height) { glViewport(0, 0, width, height); }
