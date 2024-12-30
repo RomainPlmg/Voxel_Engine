@@ -12,9 +12,9 @@
 #include "events/Event.h"
 #include "events/EventDispatcher.h"
 #include "events/EventMouse.h"
-#include "gfx/GraphicContext.h"
 #include "utils/Log.h"
 #include "utils/Time.h"
+#include "GraphicContext.h"
 
 Camera::Camera(glm::vec3 position, glm::vec3 up, float yaw, float pitch) {
     m_Position = position;
@@ -51,6 +51,8 @@ void Camera::Init() {
 }
 
 glm::mat4 Camera::GetViewMatrix() const { return glm::lookAt(m_Position, m_Position + m_Front, m_Up); }
+
+glm::vec3 Camera::GetPosition() const { return m_Position; }
 
 std::shared_ptr<Camera> Camera::Create(glm::vec3 position, glm::vec3 up, float yaw, float pitch) {
     return std::make_shared<Camera>(position, up, yaw, pitch);

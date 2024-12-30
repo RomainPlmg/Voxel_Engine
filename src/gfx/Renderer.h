@@ -29,6 +29,7 @@ class Renderer {
     void SetPolygonMode(GLenum polygonMode);
     void SetViewport(int width, int height);
     void SetClearColor(float r, float g, float b, float a);
+    void SetCamera(const std::shared_ptr<Camera>& camera);
 
     static std::shared_ptr<Renderer> Create();
 

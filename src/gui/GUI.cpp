@@ -6,10 +6,11 @@
 
 #include "core/Application.h"
 #include "core/Window.h"
-#include "gfx/GraphicContext.h"
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
+
+GUI::GUI() { m_InfoWindow = InfoWindow::Create(); }
 
 void GUI::Init() {
     IMGUI_CHECKVERSION();
@@ -19,7 +20,7 @@ void GUI::Init() {
     (void)io;
     ImGui::StyleColorsDark();
     ImGui_ImplGlfw_InitForOpenGL(Application::GetInstance()->GetWindow()->GetHandler(), true);
-    ImGui_ImplOpenGL3_Init("#version 330");
+    ImGui_ImplOpenGL3_Init("#version 450");
 }
 
 void GUI::Render() {
@@ -27,31 +28,7 @@ void GUI::Render() {
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
 
-    // Créer un menu de base
-    if (ImGui::BeginMainMenuBar()) {
-        if (ImGui::BeginMenu("File")) {
-            if (ImGui::MenuItem("Open")) {
-                // Code pour ouvrir un fichier
-            }
-            if (ImGui::MenuItem("Save")) {
-                // Code pour sauvegarder un fichier
-            }
-            if (ImGui::MenuItem("Exit")) {
-                // Code pour quitter l'application
-            }
-            ImGui::EndMenu();
-        }
-        if (ImGui::BeginMenu("Edit")) {
-            if (ImGui::MenuItem("Undo")) {
-                // Code pour annuler
-            }
-            if (ImGui::MenuItem("Redo")) {
-                // Code pour refaire
-            }
-            ImGui::EndMenu();
-        }
-        ImGui::EndMainMenuBar();
-    }
+    m_InfoWindow->Render();
 
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

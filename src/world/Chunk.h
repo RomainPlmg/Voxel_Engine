@@ -11,6 +11,8 @@
 constexpr auto CHUNK_WIDTH = 8;
 constexpr auto CHUNK_HEIGHT = 16;
 
+class Camera;
+
 class Chunk {
    public:
     explicit Chunk(glm::ivec2 position = glm::ivec2(0));

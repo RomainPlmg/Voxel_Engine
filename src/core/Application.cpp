@@ -47,13 +47,12 @@ void Application::Run() {
     while (!m_Window->ShouldClose()) {
         Time::Update();
         m_Window->Update();
+        m_World->Update();
 
         m_Renderer->Clear();
 
         m_World->Draw();
-        if (m_PauseMode) {
-            m_GUI->Render();
-        }
+        m_GUI->Render();
 
         m_Window->SwapBuffers();
     }

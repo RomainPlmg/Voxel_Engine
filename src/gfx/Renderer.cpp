@@ -7,6 +7,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "Buffer.h"
+#include "Camera.h"
 #include "Shader.h"
 #include "core/Application.h"
 #include "core/Window.h"
@@ -15,7 +16,6 @@
 #include "events/EventKeyboard.h"
 #include "gfx/GraphicContext.h"
 #include "utils/Log.h"
-#include "world/Camera.h"
 
 // Define the message callback function
 static void OpenGLMessageCallback(unsigned source, unsigned type, unsigned id, unsigned severity, int length,
@@ -39,15 +39,13 @@ static void OpenGLMessageCallback(unsigned source, unsigned type, unsigned id, u
     FATAL_MSG("Unknown severity level");
 }
 
-Renderer::Renderer() : m_ProjMatrix(glm::mat4(1.0f)), m_Camera(Camera::Create()), m_PolygonMode(GL_FILL) {}
+Renderer::Renderer() : m_ProjMatrix(glm::mat4(1.0f)), m_PolygonMode(GL_FILL) {}
 
 void Renderer::Init() {
     Application::GetInstance()->GetWindow()->GetEventDispatcher()->Subscribe(EventCategoryApplication,
                                                                              BIND_EVENT_FN(Renderer::OnEvent));
     Application::GetInstance()->GetWindow()->GetEventDispatcher()->Subscribe(EventCategoryKeyboard,
                                                                              BIND_EVENT_FN(Renderer::OnEvent));
-
-    m_Camera->Init();
 
     m_ProjMatrix = glm::perspective(glm::radians(45.0f),
                                     static_cast<float>(Application::GetInstance()->GetWindow()->GetWidth()) /
@@ -77,16 +75,18 @@ void Renderer::Render(const std::shared_ptr<ElementBuffer>& elementBuffer,
         WARN_MSG("You are trying to draw an object with an empty ebo.")
     }
 
+    if (m_Camera == nullptr) {
+        ERROR_MSG("You are trying to render without camera.")
+        return;
+    }
+
     shader->SetUniformMat4("projMatrix", m_ProjMatrix);
     shader->SetUniformMat4("viewMatrix", m_Camera->GetViewMatrix());
 
     glDrawElements(GL_TRIANGLES, elementBuffer->GetCount(), GL_UNSIGNED_INT, nullptr);
 }
 
-void Renderer::Clear() {
-    m_Camera->Update();
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-}
+void Renderer::Clear() { glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); }
 
 void Renderer::OnEvent(const Event& event) {
     if (event.GetType() == EventType::WindowResize) {
@@ -120,5 +120,7 @@ void Renderer::SetPolygonMode(GLenum polygonMode) {
 void Renderer::SetViewport(const int width, const int height) { glViewport(0, 0, width, height); }
 
 void Renderer::SetClearColor(const float r, const float g, const float b, const float a) { glClearColor(r, g, b, a); }
+
+void Renderer::SetCamera(const std::shared_ptr<Camera>& camera) { m_Camera = camera; }
 
 std::shared_ptr<Renderer> Renderer::Create() { return std::make_shared<Renderer>(); }

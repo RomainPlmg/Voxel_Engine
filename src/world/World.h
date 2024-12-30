@@ -6,6 +6,7 @@
 #define WORLD_H
 
 #include "Chunk.h"
+#include "Player.h"
 #include "pch.h"
 
 class World {
@@ -14,6 +15,7 @@ class World {
     ~World() = default;
 
     void Init();
+    void Update();
     void Draw();
 
     static std::shared_ptr<World> Create();
@@ -21,6 +23,7 @@ class World {
    private:
     char m_RenderDistance;
     std::vector<Chunk> m_Chunks;
+    std::shared_ptr<Player> m_Player;
 };
 
 #endif  // WORLD_H
