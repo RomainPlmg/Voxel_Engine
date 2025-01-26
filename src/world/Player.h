@@ -10,7 +10,7 @@
 
 class Player {
    public:
-    Player();
+    Player(glm::vec3 position = glm::vec3(0));
     ~Player() = default;
 
     void Init();
@@ -19,7 +19,7 @@ class Player {
     /* Getters */
     glm::vec3 GetPosition() const { return m_Position; }
 
-    static std::shared_ptr<Player> Create();
+    static std::shared_ptr<Player> Create(glm::vec3 position = glm::vec3(0));
 
    private:
     float m_Speed;

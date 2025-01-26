@@ -31,11 +31,21 @@ void Chunk::Update() {
     for (const auto& cube : m_Cubes) {
         for (int i = 0; i < 6; i++) {
             auto face = static_cast<Cube::Face>(i);
-
-            if (!FaceHasNeighbor(cube, face)) {
+            if ((cube->GetChunkPosition().y == CHUNK_HEIGHT - 1 && face == Cube::Face::Top) ||
+                (cube->GetChunkPosition().y == 0 && face == Cube::Face::Bottom)) {
                 cube->SetFaceVisible(face);
-                AddFaceToVertices(cube, face);
-                AddFaceToIndices();
+            }
+        }
+        if (!cube->IsTransparent()) {
+            for (int i = 0; i < 6; i++) {
+                auto face = static_cast<Cube::Face>(i);
+                if (!FaceIsBoundary(cube, face) && !FaceHasNeighbor(cube, face)) {
+                    cube->SetFaceVisible(face);
+                }
+                if (cube->GetFacesToDraw() & (1 << i)) {
+                    AddFaceToVertices(cube, face);
+                    AddFaceToIndices();
+                }
             }
         }
     }
@@ -43,7 +53,6 @@ void Chunk::Update() {
 
 void Chunk::Draw() {
     if (m_Vertices.empty()) {
-        WARN_MSG("Chunk doesn't have any vertices");
         return;
     }
 
@@ -79,10 +88,7 @@ std::shared_ptr<Cube> Chunk::GetCubeAtPosition(const glm::ivec3& cubePosition) c
     return m_Cubes[i];
 }
 
-bool Chunk::FaceHasNeighbor(const std::shared_ptr<Cube>& cube, const Cube::Face& face) {
-    if (FaceIsBoundary(cube, face)) {
-        return false;
-    }
+bool Chunk::FaceHasNeighbor(const std::shared_ptr<Cube>& cube, const Cube::Face& face) const {
     const auto cubePos = cube->GetChunkPosition();
     std::shared_ptr<Cube> neighborCube;
 
@@ -133,22 +139,40 @@ bool Chunk::FaceHasNeighbor(const std::shared_ptr<Cube>& cube, const Cube::Face&
 bool Chunk::FaceIsBoundary(const std::shared_ptr<Cube>& cube, const Cube::Face& face) {
     switch (face) {
         case Cube::Face::Front:
-            if (cube->GetChunkPosition().z == CHUNK_WIDTH - 1) return true;
+            if (cube->GetChunkPosition().z == CHUNK_WIDTH - 1) {
+                m_BoundaryCubes.push_back(cube);
+                return true;
+            }
             break;
         case Cube::Face::Back:
-            if (cube->GetChunkPosition().z == 0) return true;
+            if (cube->GetChunkPosition().z == 0) {
+                m_BoundaryCubes.push_back(cube);
+                return true;
+            }
             break;
         case Cube::Face::Left:
-            if (cube->GetChunkPosition().x == 0) return true;
+            if (cube->GetChunkPosition().x == 0) {
+                m_BoundaryCubes.push_back(cube);
+                return true;
+            }
             break;
         case Cube::Face::Right:
-            if (cube->GetChunkPosition().x == CHUNK_WIDTH - 1) return true;
+            if (cube->GetChunkPosition().x == CHUNK_WIDTH - 1) {
+                m_BoundaryCubes.push_back(cube);
+                return true;
+            }
             break;
         case Cube::Face::Top:
-            if (cube->GetChunkPosition().y == CHUNK_HEIGHT - 1) return true;
+            if (cube->GetChunkPosition().y == CHUNK_HEIGHT - 1) {
+                m_BoundaryCubes.push_back(cube);
+                return true;
+            }
             break;
         case Cube::Face::Bottom:
-            if (cube->GetChunkPosition().y == 0) return true;
+            if (cube->GetChunkPosition().y == 0) {
+                m_BoundaryCubes.push_back(cube);
+                return true;
+            }
             break;
         default:
             break;

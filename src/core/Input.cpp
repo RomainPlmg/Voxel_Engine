@@ -30,3 +30,8 @@ glm::dvec2 Input::GetMousePosition() {
 
     return position;
 }
+
+void Input::SetMousePosition(double x, double y) {
+    const auto window = Application::GetInstance()->GetWindow()->GetHandler();
+    glfwSetCursorPos(window, x, y);
+}

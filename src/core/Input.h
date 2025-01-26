@@ -14,6 +14,7 @@ class Input {
     static bool IsKeyPressed(int keycode);
     static bool IsMouseButtonPressed(int button);
     static glm::dvec2 GetMousePosition();
+    static void SetMousePosition(double x, double y);
 
    private:
     static GLFWwindow* m_Handler;

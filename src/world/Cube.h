@@ -18,12 +18,14 @@ class Cube {
 
     /* Getters */
     inline glm::ivec3 GetChunkPosition() const { return m_ChunkPosition; }
+    inline char GetFacesToDraw() const { return m_FacesToDraw; }
     inline bool IsTransparent() const { return m_IsTransparent; }
     static std::array<float, 24> GetCubeVertices(const Face& face) { return m_CommonVertices.at(face); }
 
     /* Setters */
     void SetFaceVisible(const Face& face);
     void SetFaceInvisible(const Face& face);
+    void Transparent(bool isTransparent);
 
    private:
     static const std::unordered_map<Cube::Face, std::array<float, 24>> m_CommonVertices;

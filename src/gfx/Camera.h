@@ -56,6 +56,8 @@ class Camera {
     float m_MovementSpeed;
     float m_MouseSensitivity;
     float m_Zoom;
+
+    bool m_CapturedMouse = false;
 };
 
 #endif  // CAMERA_H

@@ -10,37 +10,37 @@
 const std::unordered_map<Cube::Face, std::array<float, 24>> Cube::m_CommonVertices = {
         //--- Position ---//   //--- Color ---//
     {Front, {
-        -0.5f, -0.5f,  0.5f,   0.7f, 0.7f, 0.7f,
+        -0.5f, -0.5f,  0.5f,   0.2f, 0.2f, 0.2f,
          0.5f, -0.5f,  0.5f,   0.7f, 0.7f, 0.7f,
          0.5f,  0.5f,  0.5f,   0.7f, 0.7f, 0.7f,
         -0.5f,  0.5f,  0.5f,   0.7f, 0.7f, 0.7f
     }},
     {Back, {
-         0.5f, -0.5f, -0.5f,   0.7f, 0.7f, 0.7f,
+         0.5f, -0.5f, -0.5f,   0.2f, 0.2f, 0.2f,
         -0.5f, -0.5f, -0.5f,   0.7f, 0.7f, 0.7f,
         -0.5f,  0.5f, -0.5f,   0.7f, 0.7f, 0.7f,
          0.5f,  0.5f, -0.5f,   0.7f, 0.7f, 0.7f
     }},
     {Left, {
-        -0.5f, -0.5f, -0.5f,   0.7f, 0.7f, 0.7f,
+        -0.5f, -0.5f, -0.5f,   0.2f, 0.2f, 0.2f,
         -0.5f, -0.5f,  0.5f,   0.7f, 0.7f, 0.7f,
         -0.5f,  0.5f,  0.5f,   0.7f, 0.7f, 0.7f,
         -0.5f,  0.5f, -0.5f,   0.7f, 0.7f, 0.7f
     }},
     {Right, {
-         0.5f, -0.5f,  0.5f,   0.7f, 0.7f, 0.7f,
+         0.5f, -0.5f,  0.5f,   0.2f, 0.2f, 0.2f,
          0.5f, -0.5f, -0.5f,   0.7f, 0.7f, 0.7f,
          0.5f,  0.5f, -0.5f,   0.7f, 0.7f, 0.7f,
          0.5f,  0.5f,  0.5f,   0.7f, 0.7f, 0.7f
     }},
     {Top, {
-        -0.5f,  0.5f,  0.5f,   0.7f, 0.7f, 0.7f,
+        -0.5f,  0.5f,  0.5f,   0.2f, 0.2f, 0.2f,
          0.5f,  0.5f,  0.5f,   0.7f, 0.7f, 0.7f,
          0.5f,  0.5f, -0.5f,   0.7f, 0.7f, 0.7f,
         -0.5f,  0.5f, -0.5f,   0.7f, 0.7f, 0.7f
     }},
     {Bottom, {
-        -0.5f, -0.5f, -0.5f,   0.7f, 0.7f, 0.7f,
+        -0.5f, -0.5f, -0.5f,   0.2f, 0.2f, 0.2f,
          0.5f, -0.5f, -0.5f,   0.7f, 0.7f, 0.7f,
          0.5f, -0.5f,  0.5f,   0.7f, 0.7f, 0.7f,
         -0.5f, -0.5f,  0.5f,   0.7f, 0.7f, 0.7f
@@ -60,3 +60,5 @@ void Cube::SetFaceInvisible(const Face& face) {
     const char mask = ~(1 << face);
     m_FacesToDraw = m_FacesToDraw & mask;  // Set the selected bit to 0 (No draw)
 }
+
+void Cube::Transparent(bool isTransparent) { m_IsTransparent = isTransparent; }

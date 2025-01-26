@@ -7,7 +7,7 @@
 #include "core/Application.h"
 #include "gfx/Renderer.h"
 
-Player::Player() : m_Speed(1), m_Position(glm::vec3(0)) { m_Camera = Camera::Create(); }
+Player::Player(glm::vec3 position) : m_Speed(1), m_Position(position) { m_Camera = Camera::Create(position); }
 
 void Player::Init() {
     m_Camera->Init();
@@ -19,4 +19,4 @@ void Player::Update() {
     m_Position = m_Camera->GetPosition();
 }
 
-std::shared_ptr<Player> Player::Create() { return std::make_shared<Player>(); }
+std::shared_ptr<Player> Player::Create(glm::vec3 position) { return std::make_shared<Player>(position); }

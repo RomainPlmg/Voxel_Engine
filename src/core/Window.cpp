@@ -52,9 +52,6 @@ void Window::Init(const bool automatic) {
 
     glfwSetWindowUserPointer(m_Handler, this);
 
-    // Disable cursor
-    glfwSetInputMode(m_Handler, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-
     /* Set callback functions */
     glfwSetFramebufferSizeCallback(m_Handler, framebuffer_size_callback);
     glfwSetKeyCallback(m_Handler, key_callback);
@@ -65,16 +62,14 @@ void Window::Init(const bool automatic) {
     m_EventDispatcher = EventDispatcher::Create();
     m_GraphicContext = GraphicContext::Create(m_Handler);
     m_GraphicContext->Init();
+
+    // Disable VSync
+    glfwSwapInterval(0);
 }
 
 void Window::Update() const {
     glfwPollEvents();
     if (Application::GetInstance()->IsPaused()) {
-        // Enable cursor
-        glfwSetInputMode(m_Handler, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-    } else {
-        // Disable cursor
-        glfwSetInputMode(m_Handler, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     }
 }
 

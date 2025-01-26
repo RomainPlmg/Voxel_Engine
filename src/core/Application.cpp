@@ -61,17 +61,7 @@ void Application::Run() {
     m_Window->Shutdown();
 }
 
-void Application::OnEvent(const Event& event) {
-    if (event.GetType() == EventType::KeyPressed) {
-        const auto* keyEvent = dynamic_cast<const KeyPressedEvent*>(&event);
-        if (keyEvent->GetKeyCode() == GLFW_KEY_ESCAPE) {
-            if (m_PauseMode)
-                m_PauseMode = false;
-            else
-                m_PauseMode = true;
-        }
-    }
-}
+void Application::OnEvent(const Event& event) {}
 
 Application* Application::GetInstance() {
     if (m_Instance == nullptr) {
