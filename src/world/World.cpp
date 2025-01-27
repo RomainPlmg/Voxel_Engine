@@ -7,13 +7,15 @@
 #include "core/Application.h"
 #include "gui/GUI.h"
 
-World::World() : m_RenderDistance(16) { m_Player = Player::Create(glm::vec3(0.0f, CHUNK_HEIGHT + 2, 0.0f)); }
+World::World() : m_RenderDistance(4) { m_Player = Player::Create(glm::vec3(0.0f, CHUNK_HEIGHT + 2, 0.0f)); }
 
 void World::Init() {
     m_Player->Init();
 
-    for (int x = -m_RenderDistance / 2; x < m_RenderDistance / 2; x++) {
-        for (int y = -m_RenderDistance / 2; y < m_RenderDistance / 2; y++) {
+    int radius = m_RenderDistance / 2;
+
+    for (int x = -radius; x < radius; x++) {
+        for (int y = -radius; y < radius; y++) {
             m_Chunks[glm::ivec2(x, y)] = Chunk(glm::ivec2(x, y));
             m_Chunks[glm::ivec2(x, y)].GetCubeAtPosition(glm::ivec3(0, CHUNK_HEIGHT - 1, 0))->Transparent(true);
             m_Chunks[glm::ivec2(x, y)].Update();
@@ -28,6 +30,30 @@ void World::Init() {
 void World::Update() {
     m_Player->Update();
     Application::GetInstance()->GetGUI()->GetInfoWindow()->SetPlayerPosition(m_Player->GetPosition());
+
+    glm::ivec2 playerChunk =
+        glm::ivec2(m_Player->GetPosition().x / CHUNK_WIDTH, m_Player->GetPosition().z / CHUNK_WIDTH);
+
+    int radius = m_RenderDistance / 2;
+    for (int x = -radius; x <= radius; ++x) {
+        for (int y = -radius; y <= radius; ++y) {
+            glm::ivec2 chunkPos = glm::ivec2(playerChunk.x + x, playerChunk.y + y);
+            if (m_Chunks.find(chunkPos) == m_Chunks.end()) {
+                m_Chunks[chunkPos] = Chunk(chunkPos);
+                m_Chunks[chunkPos].GetCubeAtPosition(glm::ivec3(0, CHUNK_HEIGHT - 1, 0))->Transparent(true);
+                UpdateBoundaryFaces(m_Chunks[chunkPos]);
+            }
+        }
+    }
+
+    for (auto it = m_Chunks.begin(); it != m_Chunks.end();) {
+        const glm::ivec2 chunkPos = it->first;
+        if (std::abs(chunkPos.x - playerChunk.x) > radius || std::abs(chunkPos.y - playerChunk.y) > radius) {
+            it = m_Chunks.erase(it);
+        } else {
+            it++;
+        }
+    }
 }
 
 void World::Draw() {
@@ -38,7 +64,7 @@ void World::Draw() {
 
 std::shared_ptr<World> World::Create() { return std::make_shared<World>(); }
 
-void World::UpdateBoundaryFaces(Chunk& chunk) {
+void World::UpdateBoundaryFaces(Chunk& chunk, bool recursive) {
     auto rightChunk = m_Chunks.find(glm::ivec2(chunk.GetWorldPosition().x + 1, chunk.GetWorldPosition().y));  // Right
     auto leftChunk = m_Chunks.find(glm::ivec2(chunk.GetWorldPosition().x - 1, chunk.GetWorldPosition().y));   // Left
     auto frontChunk = m_Chunks.find(glm::ivec2(chunk.GetWorldPosition().x, chunk.GetWorldPosition().y + 1));  // Front
@@ -85,6 +111,20 @@ void World::UpdateBoundaryFaces(Chunk& chunk) {
     }
 
     chunk.Update();
+    if (recursive) {
+        if (rightChunk != m_Chunks.end()) {
+            UpdateBoundaryFaces(rightChunk->second, false);
+        }
+        if (leftChunk != m_Chunks.end()) {
+            UpdateBoundaryFaces(leftChunk->second, false);
+        }
+        if (frontChunk != m_Chunks.end()) {
+            UpdateBoundaryFaces(frontChunk->second, false);
+        }
+        if (backChunk != m_Chunks.end()) {
+            UpdateBoundaryFaces(backChunk->second, false);
+        }
+    }
 }
 
 uint16_t World::GetChunkIndex(const glm::ivec2& position) const {

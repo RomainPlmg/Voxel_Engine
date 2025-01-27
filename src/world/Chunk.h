@@ -8,8 +8,8 @@
 #include "pch.h"
 #include "world/Cube.h"
 
-constexpr auto CHUNK_WIDTH = 16;
-constexpr auto CHUNK_HEIGHT = 16;
+constexpr auto CHUNK_WIDTH = 4;
+constexpr auto CHUNK_HEIGHT = 4;
 
 class Camera;
 

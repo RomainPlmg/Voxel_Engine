@@ -25,7 +25,7 @@ class World {
     static std::shared_ptr<World> Create();
 
    private:
-    void UpdateBoundaryFaces(Chunk& chunk);
+    void UpdateBoundaryFaces(Chunk& chunk, bool recursive = true);
     uint16_t GetChunkIndex(const glm::ivec2& position) const;
 
     char m_RenderDistance;
