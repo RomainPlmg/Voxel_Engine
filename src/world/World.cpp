@@ -7,7 +7,7 @@
 #include "core/Application.h"
 #include "gui/GUI.h"
 
-World::World() : m_RenderDistance(4) { m_Player = Player::Create(glm::vec3(0.0f, CHUNK_HEIGHT + 2, 0.0f)); }
+World::World() : m_RenderDistance(8) { m_Player = Player::Create(glm::vec3(0.0f, CHUNK_HEIGHT + 2, 0.0f)); }
 
 void World::Init() {
     m_Player->Init();
@@ -31,8 +31,8 @@ void World::Update() {
     m_Player->Update();
     Application::GetInstance()->GetGUI()->GetInfoWindow()->SetPlayerPosition(m_Player->GetPosition());
 
-    glm::ivec2 playerChunk =
-        glm::ivec2(m_Player->GetPosition().x / CHUNK_WIDTH, m_Player->GetPosition().z / CHUNK_WIDTH);
+    glm::ivec2 playerChunk = glm::ivec2(std::floor((m_Player->GetPosition().x + CHUNK_WIDTH / 2.0f) / CHUNK_WIDTH),
+                                        std::floor((m_Player->GetPosition().z + CHUNK_WIDTH / 2.0f) / CHUNK_WIDTH));
 
     int radius = m_RenderDistance / 2;
     for (int x = -radius; x <= radius; ++x) {
