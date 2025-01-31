@@ -29,6 +29,8 @@ void GUI::Init() {
     ImGui::StyleColorsDark();
     ImGui_ImplGlfw_InitForOpenGL(Application::GetInstance()->GetWindow()->GetHandler(), true);
     ImGui_ImplOpenGL3_Init("#version 450");
+
+    m_ViewportGUI->Init();
 }
 
 void GUI::Render() {

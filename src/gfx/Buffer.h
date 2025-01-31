@@ -158,6 +158,7 @@ class FrameBuffer {
     FrameBuffer(int width, int height);
     ~FrameBuffer();
 
+    void Resize(int width, int height);
     void Bind() const;
     void Unbind();
 
@@ -166,9 +167,6 @@ class FrameBuffer {
     /* Getters */
     [[nodiscard]] inline uint32_t GetColorTexture() const { return m_ColorTexture; };
     [[nodiscard]] inline uint32_t GetDepthBuffer() const { return m_DepthBuffer; };
-
-    /* Setters */
-    void SetSize(int width, int height);
 
    private:
     uint32_t m_RendererID;

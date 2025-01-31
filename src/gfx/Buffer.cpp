@@ -92,6 +92,20 @@ FrameBuffer::FrameBuffer(int width, int height) {
 
 FrameBuffer::~FrameBuffer() { glDeleteFramebuffers(1, &m_RendererID); }
 
+void FrameBuffer::Resize(int width, int height) {
+    glBindFramebuffer(GL_FRAMEBUFFER, m_RendererID);  // Bind the framebuffer
+
+    // Update color texture
+    glBindTexture(GL_TEXTURE_2D, m_ColorTexture);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+
+    // Update deth buffer
+    glBindRenderbuffer(GL_RENDERBUFFER, m_DepthBuffer);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
+
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);  // Unbind the framebuffer
+}
+
 void FrameBuffer::Bind() const { glBindFramebuffer(GL_FRAMEBUFFER, m_RendererID); }
 
 void FrameBuffer::Unbind() { glBindFramebuffer(GL_FRAMEBUFFER, 0); }
@@ -99,5 +113,3 @@ void FrameBuffer::Unbind() { glBindFramebuffer(GL_FRAMEBUFFER, 0); }
 std::shared_ptr<FrameBuffer> FrameBuffer::Create(int width, int height) {
     return std::make_shared<FrameBuffer>(width, height);
 }
-
-void FrameBuffer::SetSize(int width, int height) {}

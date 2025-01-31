@@ -9,18 +9,21 @@
 
 class FrameBuffer;
 class Renderer;
+class Event;
 
 class ViewportGUI {
    public:
-    ViewportGUI();
+    ViewportGUI() = default;
     ~ViewportGUI() = default;
 
+    void Init();
     void Render();
+    void OnEvent(const Event &event);
 
     static std::shared_ptr<ViewportGUI> Create();
 
    private:
-    ImVec2 m_ViewportSize;
+    ImVec2 m_ViewportSize, m_ViewportPos;
     std::shared_ptr<FrameBuffer> m_FrameBuffer;
 };
 
