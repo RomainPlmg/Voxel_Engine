@@ -153,4 +153,27 @@ class ElementBuffer {
     int m_Count = 0;
 };
 
+class FrameBuffer {
+   public:
+    FrameBuffer(int width, int height);
+    ~FrameBuffer();
+
+    void Bind() const;
+    void Unbind();
+
+    static std::shared_ptr<FrameBuffer> Create(int width, int height);
+
+    /* Getters */
+    [[nodiscard]] inline uint32_t GetColorTexture() const { return m_ColorTexture; };
+    [[nodiscard]] inline uint32_t GetDepthBuffer() const { return m_DepthBuffer; };
+
+    /* Setters */
+    void SetSize(int width, int height);
+
+   private:
+    uint32_t m_RendererID;
+    uint32_t m_ColorTexture;
+    uint32_t m_DepthBuffer;
+};
+
 #endif  // BUFFER_H

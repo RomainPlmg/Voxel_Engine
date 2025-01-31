@@ -29,7 +29,7 @@ void World::Init() {
 
 void World::Update() {
     m_Player->Update();
-    Application::GetInstance()->GetGUI()->GetInfoWindow()->SetPlayerPosition(m_Player->GetPosition());
+    Application::GetInstance()->GetGUI()->GetDebugGUI()->SetPlayerPosition(m_Player->GetPosition());
 
     glm::ivec2 playerChunk = glm::ivec2(std::floor((m_Player->GetPosition().x + CHUNK_WIDTH / 2.0f) / CHUNK_WIDTH),
                                         std::floor((m_Player->GetPosition().z + CHUNK_WIDTH / 2.0f) / CHUNK_WIDTH));

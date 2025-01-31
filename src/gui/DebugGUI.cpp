@@ -2,19 +2,17 @@
 // Created by Romain on 30/12/2024.
 //
 
-#include "InfoWindow.h"
+#include "DebugGUI.h"
 
 #include "imgui.h"
 #include "utils/Log.h"
 #include "utils/Monitor.h"
 #include "utils/Time.h"
 
-InfoWindow::InfoWindow() : m_PlayerPos(glm::vec3(0)) {}
+DebugGUI::DebugGUI() : m_PlayerPos(glm::vec3(0)) {}
 
-void InfoWindow::Render() {
-    ImGui::Begin("Info", nullptr,
-                 ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse |
-                     ImGuiWindowFlags_NoCollapse);
+void DebugGUI::Render() {
+    ImGui::Begin("Debug", nullptr, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
 
     // Print FPS
     ImGui::Text("FPS: %d", Time::GetFPS());
@@ -35,6 +33,6 @@ void InfoWindow::Render() {
     ImGui::End();
 }
 
-void InfoWindow::SetPlayerPosition(glm::vec3 position) { m_PlayerPos = position; }
+void DebugGUI::SetPlayerPosition(glm::vec3 position) { m_PlayerPos = position; }
 
-std::shared_ptr<InfoWindow> InfoWindow::Create() { return std::make_shared<InfoWindow>(); }
+std::shared_ptr<DebugGUI> DebugGUI::Create() { return std::make_shared<DebugGUI>(); }

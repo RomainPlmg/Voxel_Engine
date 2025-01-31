@@ -6,6 +6,7 @@
 
 #include "core/Application.h"
 #include "gfx/Renderer.h"
+#include "gui/GUI.h"
 
 Player::Player(glm::vec3 position) : m_Speed(1), m_Position(position) { m_Camera = Camera::Create(position); }
 

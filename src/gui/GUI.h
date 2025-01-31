@@ -5,7 +5,8 @@
 #ifndef GUI_H
 #define GUI_H
 
-#include "InfoWindow.h"
+#include "DebugGUI.h"
+#include "ViewportGUI.h"
 #include "pch.h"
 
 class GUI {
@@ -20,10 +21,13 @@ class GUI {
     static std::shared_ptr<GUI> Create();
 
     /* Getters */
-    std::shared_ptr<InfoWindow> GetInfoWindow() const { return m_InfoWindow; }
+    std::shared_ptr<DebugGUI> GetDebugGUI() const { return m_DebugGUI; }
+    std::shared_ptr<ViewportGUI> GetViewport() const { return m_ViewportGUI; }
 
    private:
-    std::shared_ptr<InfoWindow> m_InfoWindow;
+    static bool m_Open;
+    std::shared_ptr<DebugGUI> m_DebugGUI;
+    std::shared_ptr<ViewportGUI> m_ViewportGUI;
 };
 
 #endif  // GUI_H

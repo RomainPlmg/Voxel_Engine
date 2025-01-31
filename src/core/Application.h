@@ -30,6 +30,7 @@ class Application {
     /* Getters */
     std::shared_ptr<Window> GetWindow() const { return m_Window; }
     std::shared_ptr<Renderer> GetRenderer() const { return m_Renderer; }
+    std::shared_ptr<World> GetWorld() const { return m_World; }
     std::shared_ptr<GUI> GetGUI() const { return m_GUI; }
     bool IsPaused() const { return m_PauseMode; }
     static Application *GetInstance();
@@ -38,9 +39,9 @@ class Application {
     Application();
 
     std::shared_ptr<Window> m_Window;
-    std::shared_ptr<Renderer> m_Renderer;
     std::shared_ptr<GUI> m_GUI;
     std::shared_ptr<World> m_World;
+    std::shared_ptr<Renderer> m_Renderer;
     bool m_PauseMode;
 
     static Application *m_Instance;

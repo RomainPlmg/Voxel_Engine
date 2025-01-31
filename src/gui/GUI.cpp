@@ -6,17 +6,25 @@
 
 #include "core/Application.h"
 #include "core/Window.h"
+#include "gfx/Buffer.h"
+#include "gfx/Renderer.h"
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 
-GUI::GUI() { m_InfoWindow = InfoWindow::Create(); }
+bool GUI::m_Open = true;
+
+GUI::GUI() {
+    m_DebugGUI = DebugGUI::Create();
+    m_ViewportGUI = ViewportGUI::Create();
+}
 
 void GUI::Init() {
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
-    const ImGuiIO& io = ImGui::GetIO();
+    ImGuiIO& io = ImGui::GetIO();
     io.Fonts->AddFontFromFileTTF(ASSET_DIRECTORY "fonts/JetBrainsMono-Regular.ttf", 24.0f);
+    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
     (void)io;
     ImGui::StyleColorsDark();
     ImGui_ImplGlfw_InitForOpenGL(Application::GetInstance()->GetWindow()->GetHandler(), true);
@@ -28,9 +36,13 @@ void GUI::Render() {
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
 
-    m_InfoWindow->Render();
+    ImGui::DockSpaceOverViewport(0, ImGui::GetMainViewport());
+
+    m_ViewportGUI->Render();
+    m_DebugGUI->Render();
 
     ImGui::Render();
+    Application::GetInstance()->GetRenderer()->Clear();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 

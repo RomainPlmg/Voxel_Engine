@@ -44,14 +44,12 @@ void Application::Run() {
     }
 
     m_Renderer->SetClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+
     while (!m_Window->ShouldClose()) {
         Time::Update();
         m_Window->Update();
         m_World->Update();
 
-        m_Renderer->Clear();
-
-        m_World->Draw();
         m_GUI->Render();
 
         m_Window->SwapBuffers();

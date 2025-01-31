@@ -9,6 +9,7 @@
 #include "gfx/Shader.h"
 #include "gfx/VertexArray.h"
 #include "glm/ext/matrix_transform.hpp"
+#include "gui/GUI.h"
 
 Chunk::Chunk(const glm::ivec2 position) : m_WorldPosition(position) {
     m_Shader = ShaderProgramLibrary::GetShaderProgram("BASIC");

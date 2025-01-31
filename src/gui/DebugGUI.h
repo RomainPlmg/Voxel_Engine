@@ -2,23 +2,23 @@
 // Created by Romain on 30/12/2024.
 //
 
-#ifndef INFOWINDOW_H
-#define INFOWINDOW_H
+#ifndef DEBUG_GUI_H
+#define DEBUG_GUI_H
 
-class InfoWindow {
+class DebugGUI {
    public:
-    InfoWindow();
-    ~InfoWindow() = default;
+    DebugGUI();
+    ~DebugGUI() = default;
 
     void Render();
 
     /* Setters */
     void SetPlayerPosition(glm::vec3 position);
 
-    static std::shared_ptr<InfoWindow> Create();
+    static std::shared_ptr<DebugGUI> Create();
 
    private:
     glm::vec3 m_PlayerPos;
 };
 
-#endif  // INFOWINDOW_H
+#endif  // DEBUG_GUI_H

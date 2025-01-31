@@ -82,16 +82,14 @@ void Camera::OnMouseEvent(const Event& event) {
     auto window = Application::GetInstance()->GetWindow();
 
     if (event.GetType() == EventType::MouseButtonPressed) {
-        m_CapturedMouse = true;
-        Input::SetMousePosition(m_LastMousePosition.x, m_LastMousePosition.y);
-        glfwSetInputMode(window->GetHandler(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+        // m_CapturedMouse = true;
+        // Input::SetMousePosition(m_LastMousePosition.x, m_LastMousePosition.y);
+        // glfwSetInputMode(window->GetHandler(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     }
 
     if (event.GetType() == EventType::MouseButtonReleased) {
-        m_CapturedMouse = false;
-        glfwSetInputMode(window->GetHandler(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-        Input::SetMousePosition(window->GetWidth() / static_cast<double>(2),
-                                window->GetHeight() / static_cast<double>(2));
+        // m_CapturedMouse = false;
+        // glfwSetInputMode(window->GetHandler(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
     }
 
     if (event.GetType() == EventType::MouseMoved) {
@@ -99,9 +97,9 @@ void Camera::OnMouseEvent(const Event& event) {
         double xOffset = m_LastMousePosition.x - mouseEvent->posX;
         double yOffset = m_LastMousePosition.y - mouseEvent->posY;
 
-        if (!m_CapturedMouse) {
-            return;
-        }
+        // if (!m_CapturedMouse) {
+        //     return;
+        // }
 
         xOffset *= m_MouseSensitivity;
         yOffset *= m_MouseSensitivity;
