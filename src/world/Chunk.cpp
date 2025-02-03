@@ -184,16 +184,17 @@ bool Chunk::FaceIsBoundary(const std::shared_ptr<Cube>& cube, const Cube::Face& 
 
 void Chunk::AddFaceToVertices(const std::shared_ptr<Cube>& cube, const Cube::Face& face) {
     const auto vertices = Cube::GetCubeVertices(face);
-    for (int i = 0; i < Cube::GetCubeVertices(face).size(); i = i + 6) {
+    for (int i = 0; i < Cube::GetCubeVertices(face).size(); i = i + 3) {
         // Vertex coordinates
         m_Vertices.push_back(vertices[i] + cube->GetChunkPosition().x);      // X
         m_Vertices.push_back(vertices[i + 1] + cube->GetChunkPosition().y);  // Y
         m_Vertices.push_back(vertices[i + 2] + cube->GetChunkPosition().z);  // Z
 
         // Vertex colors
-        m_Vertices.push_back(vertices[i + 3]);  // R
-        m_Vertices.push_back(vertices[i + 4]);  // G
-        m_Vertices.push_back(vertices[i + 5]);  // B
+        Color color = cube->GetColor().ToGLColor();
+        m_Vertices.push_back(color.r);  // R
+        m_Vertices.push_back(color.g);  // G
+        m_Vertices.push_back(color.b);  // B
     }
 }
 
