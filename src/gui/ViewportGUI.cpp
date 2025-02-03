@@ -9,6 +9,7 @@
 #include "core/Window.h"
 #include "events/EventDispatcher.h"
 #include "gfx/Buffer.h"
+#include "gfx/GraphicContext.h"
 #include "gfx/Renderer.h"
 #include "imgui.h"
 #include "pch.h"
@@ -17,6 +18,7 @@
 void ViewportGUI::Init() {
     Application::GetInstance()->GetWindow()->GetEventDispatcher()->Subscribe(EventCategory::EventCategoryMouse,
                                                                              BIND_EVENT_FN(ViewportGUI::OnEvent));
+    m_FrameBuffer = FrameBuffer::Create(1, 1);
 }
 
 void ViewportGUI::Render() {
@@ -25,12 +27,9 @@ void ViewportGUI::Render() {
     m_ViewportSize = ImGui::GetContentRegionAvail();
     m_ViewportPos = ImGui::GetWindowPos();
 
-    if (m_FrameBuffer == nullptr) {
-        m_FrameBuffer = FrameBuffer::Create(static_cast<int>(m_ViewportSize.x), static_cast<int>(m_ViewportSize.y));
-    }
-
     m_FrameBuffer->Bind();
-    if (oldViewPortSize.x != m_ViewportSize.x || oldViewPortSize.y != m_ViewportSize.y) {
+    if (m_ViewportSize.x > 0 && m_ViewportSize.y > 0 &&
+        (oldViewPortSize.x != m_ViewportSize.x || oldViewPortSize.y != m_ViewportSize.y)) {
         m_FrameBuffer->Resize(static_cast<int>(m_ViewportSize.x), static_cast<int>(m_ViewportSize.y));
     }
     Application::GetInstance()->GetRenderer()->Clear();
@@ -49,16 +48,13 @@ void ViewportGUI::OnEvent(const Event& event) {
         glm::dvec2 mousePos = Input::GetMousePosition();
         if (mousePos.x > m_ViewportPos.x && mousePos.x < m_ViewportSize.x - m_ViewportPos.x) {
             if (mousePos.y > m_ViewportPos.y && mousePos.y < m_ViewportSize.y - m_ViewportPos.y) {
-                TRACE_MSG("In viewport");
+                glfwSetInputMode(window->GetHandler(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
             }
         }
-        // m_CapturedMouse = true;
-        // glfwSetInputMode(window->GetHandler(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     }
 
     if (event.GetType() == EventType::MouseButtonReleased) {
-        // m_CapturedMouse = false;
-        // glfwSetInputMode(window->GetHandler(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+        glfwSetInputMode(window->GetHandler(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
     }
 }
 

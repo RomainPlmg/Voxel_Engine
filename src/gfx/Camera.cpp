@@ -70,6 +70,29 @@ void Camera::Update() {
     glm::vec3 frontXZ = glm::normalize(glm::vec3(m_Front.x, 0.0f, m_Front.z));
     glm::vec3 rightXZ = glm::normalize(glm::vec3(m_Right.x, 0.0f, m_Right.z));
 
+    double xOffset = m_LastMousePosition.x - Input::GetMousePosition().x;
+    double yOffset = m_LastMousePosition.y - Input::GetMousePosition().y;
+
+    if (!m_CapturedMouse) {
+        return;
+    }
+
+    xOffset *= m_MouseSensitivity;
+    yOffset *= m_MouseSensitivity;
+
+    m_Yaw -= xOffset;
+    m_Pitch += yOffset;
+
+    // Make sure that when pitch is out of bounds, screen doesn't get flipped
+    if (m_Pitch > 89.0f) m_Pitch = 89.0f;
+    if (m_Pitch < -89.0f) m_Pitch = -89.0f;
+
+    // Update Front, Right and Up Vectors using the updated Euler angles
+    UpdateCameraVectors();
+
+    m_LastMousePosition.x = Input::GetMousePosition().x;
+    m_LastMousePosition.y = Input::GetMousePosition().y;
+
     if (Input::IsKeyPressed(GLFW_KEY_W)) m_Position += frontXZ * velocity;
     if (Input::IsKeyPressed(GLFW_KEY_S)) m_Position -= frontXZ * velocity;
     if (Input::IsKeyPressed(GLFW_KEY_A)) m_Position -= rightXZ * velocity;
@@ -82,40 +105,15 @@ void Camera::OnMouseEvent(const Event& event) {
     auto window = Application::GetInstance()->GetWindow();
 
     if (event.GetType() == EventType::MouseButtonPressed) {
-        // m_CapturedMouse = true;
-        // Input::SetMousePosition(m_LastMousePosition.x, m_LastMousePosition.y);
-        // glfwSetInputMode(window->GetHandler(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+        m_LastMousePosition.x = Input::GetMousePosition().x;
+        m_LastMousePosition.y = Input::GetMousePosition().y;
+        m_CapturedMouse = true;
     }
 
     if (event.GetType() == EventType::MouseButtonReleased) {
-        // m_CapturedMouse = false;
-        // glfwSetInputMode(window->GetHandler(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-    }
-
-    if (event.GetType() == EventType::MouseMoved) {
-        const auto mouseEvent = dynamic_cast<const MouseMotionEvent*>(&event);
-        double xOffset = m_LastMousePosition.x - mouseEvent->posX;
-        double yOffset = m_LastMousePosition.y - mouseEvent->posY;
-
-        // if (!m_CapturedMouse) {
-        //     return;
-        // }
-
-        xOffset *= m_MouseSensitivity;
-        yOffset *= m_MouseSensitivity;
-
-        m_Yaw -= xOffset;
-        m_Pitch += yOffset;
-
-        // Make sure that when pitch is out of bounds, screen doesn't get flipped
-        if (m_Pitch > 89.0f) m_Pitch = 89.0f;
-        if (m_Pitch < -89.0f) m_Pitch = -89.0f;
-
-        // Update Front, Right and Up Vectors using the updated Euler angles
-        UpdateCameraVectors();
-
-        m_LastMousePosition.x = mouseEvent->posX;
-        m_LastMousePosition.y = mouseEvent->posY;
+        m_LastMousePosition.x = Input::GetMousePosition().x;
+        m_LastMousePosition.y = Input::GetMousePosition().y;
+        m_CapturedMouse = false;
     }
 }
 
