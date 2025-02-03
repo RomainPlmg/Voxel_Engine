@@ -7,49 +7,49 @@
 #include "gfx/Buffer.h"
 
 // clang-format off
-const std::unordered_map<Cube::Face, std::array<float, 24>> Cube::m_CommonVertices = {
-        //--- Position ---//   //--- Color ---//
+const std::unordered_map<Cube::Face, std::array<float, 12>> Cube::m_CommonVertices = {
+        //--- Position ---//
     {Front, {
-        -0.5f, -0.5f,  0.5f,   0.2f, 0.2f, 0.2f,
-         0.5f, -0.5f,  0.5f,   0.7f, 0.7f, 0.7f,
-         0.5f,  0.5f,  0.5f,   0.7f, 0.7f, 0.7f,
-        -0.5f,  0.5f,  0.5f,   0.7f, 0.7f, 0.7f
+        -0.5f, -0.5f,  0.5f,
+         0.5f, -0.5f,  0.5f,
+         0.5f,  0.5f,  0.5f,
+        -0.5f,  0.5f,  0.5f,
     }},
     {Back, {
-         0.5f, -0.5f, -0.5f,   0.2f, 0.2f, 0.2f,
-        -0.5f, -0.5f, -0.5f,   0.7f, 0.7f, 0.7f,
-        -0.5f,  0.5f, -0.5f,   0.7f, 0.7f, 0.7f,
-         0.5f,  0.5f, -0.5f,   0.7f, 0.7f, 0.7f
+         0.5f, -0.5f, -0.5f,
+        -0.5f, -0.5f, -0.5f,
+        -0.5f,  0.5f, -0.5f,
+         0.5f,  0.5f, -0.5f,
     }},
     {Left, {
-        -0.5f, -0.5f, -0.5f,   0.2f, 0.2f, 0.2f,
-        -0.5f, -0.5f,  0.5f,   0.7f, 0.7f, 0.7f,
-        -0.5f,  0.5f,  0.5f,   0.7f, 0.7f, 0.7f,
-        -0.5f,  0.5f, -0.5f,   0.7f, 0.7f, 0.7f
+        -0.5f, -0.5f, -0.5f,
+        -0.5f, -0.5f,  0.5f,
+        -0.5f,  0.5f,  0.5f,
+        -0.5f,  0.5f, -0.5f,
     }},
     {Right, {
-         0.5f, -0.5f,  0.5f,   0.2f, 0.2f, 0.2f,
-         0.5f, -0.5f, -0.5f,   0.7f, 0.7f, 0.7f,
-         0.5f,  0.5f, -0.5f,   0.7f, 0.7f, 0.7f,
-         0.5f,  0.5f,  0.5f,   0.7f, 0.7f, 0.7f
+         0.5f, -0.5f,  0.5f,
+         0.5f, -0.5f, -0.5f,
+         0.5f,  0.5f, -0.5f,
+         0.5f,  0.5f,  0.5f,
     }},
     {Top, {
-        -0.5f,  0.5f,  0.5f,   0.2f, 0.2f, 0.2f,
-         0.5f,  0.5f,  0.5f,   0.7f, 0.7f, 0.7f,
-         0.5f,  0.5f, -0.5f,   0.7f, 0.7f, 0.7f,
-        -0.5f,  0.5f, -0.5f,   0.7f, 0.7f, 0.7f
+        -0.5f,  0.5f,  0.5f,
+         0.5f,  0.5f,  0.5f,
+         0.5f,  0.5f, -0.5f,
+        -0.5f,  0.5f, -0.5f,
     }},
     {Bottom, {
-        -0.5f, -0.5f, -0.5f,   0.2f, 0.2f, 0.2f,
-         0.5f, -0.5f, -0.5f,   0.7f, 0.7f, 0.7f,
-         0.5f, -0.5f,  0.5f,   0.7f, 0.7f, 0.7f,
-        -0.5f, -0.5f,  0.5f,   0.7f, 0.7f, 0.7f
+        -0.5f, -0.5f, -0.5f,
+         0.5f, -0.5f, -0.5f,
+         0.5f, -0.5f,  0.5f,
+        -0.5f, -0.5f,  0.5f
     }}
 };
 // clang-format on
 
-Cube::Cube(const glm::ivec3 chunkPosition)
-    : m_IsTransparent(false), m_ChunkPosition(chunkPosition), m_FacesToDraw(0b00000000) {}
+Cube::Cube(const glm::ivec3 chunkPosition, Color color)
+    : m_IsTransparent(false), m_ChunkPosition(chunkPosition), m_FacesToDraw(0b00000000), m_Color(color) {}
 
 void Cube::SetFaceVisible(const Face& face) {
     const char mask = 1 << face;
@@ -62,3 +62,5 @@ void Cube::SetFaceInvisible(const Face& face) {
 }
 
 void Cube::Transparent(bool isTransparent) { m_IsTransparent = isTransparent; }
+
+void Cube::SetColor(const Color& color) { m_Color = color; }
