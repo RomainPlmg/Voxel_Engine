@@ -23,7 +23,7 @@ void GUI::Init() {
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO();
-    io.Fonts->AddFontFromFileTTF(ASSET_DIRECTORY "fonts/JetBrainsMono-Regular.ttf", 24.0f);
+    io.Fonts->AddFontFromFileTTF(ASSET_DIRECTORY "fonts/JetBrainsMono-Regular.ttf", 18.0f);
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
     (void)io;
     ImGui::StyleColorsDark();

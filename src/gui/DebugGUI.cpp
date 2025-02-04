@@ -5,6 +5,7 @@
 #include "DebugGUI.h"
 
 #include "core/Application.h"
+#include "gfx/Renderer.h"
 #include "imgui.h"
 #include "utils/Log.h"
 #include "utils/Monitor.h"
@@ -26,7 +27,7 @@ void DebugGUI::Render() {
     Application::GetInstance()->GetWorld()->SetAmbiantLightStrenght(lightStrenght);
 
     // Print FPS
-    ImGui::Text("FPS: %d", Time::GetFPS());
+    ImGui::Text("Application average %.3f ms/frame (%d FPS)", Time::GetDeltaTime(), Time::GetFPS());
 
     // Print RAM consumption
     ImGui::Text("RAM: %d MB", Monitor::GetRAMConsumption() / 1000);
@@ -35,6 +36,9 @@ void DebugGUI::Render() {
     ImGui::Text("X: %f", m_PlayerPos.x);
     ImGui::Text("Y: %f", m_PlayerPos.y);
     ImGui::Text("Z: %f", m_PlayerPos.z);
+
+    ImGui::Text("Triangle count: %.3fK",
+                static_cast<double>(Application::GetInstance()->GetRenderer()->GetTriangleCount()) / 1000.0);
 
     ImVec2 contentSize = ImGui::GetContentRegionAvail();
     contentSize.x = 200.0f;

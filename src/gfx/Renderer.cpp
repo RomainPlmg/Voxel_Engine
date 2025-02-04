@@ -40,7 +40,7 @@ static void OpenGLMessageCallback(unsigned source, unsigned type, unsigned id, u
     FATAL_MSG("Unknown severity level");
 }
 
-Renderer::Renderer() : m_ProjMatrix(glm::mat4(1.0f)), m_PolygonMode(GL_FILL) {}
+Renderer::Renderer() : m_ProjMatrix(glm::mat4(1.0f)), m_PolygonMode(GL_FILL), m_TriangleCount(0) {}
 
 void Renderer::Init() {
     Application::GetInstance()->GetWindow()->GetEventDispatcher()->Subscribe(EventCategoryApplication,
@@ -71,10 +71,12 @@ void Renderer::Init() {
 }
 
 void Renderer::Render(const std::shared_ptr<ElementBuffer>& elementBuffer,
-                      const std::shared_ptr<ShaderProgram>& shader) const {
+                      const std::shared_ptr<ShaderProgram>& shader) {
     if (elementBuffer->GetCount() == 0) {
         WARN_MSG("You are trying to draw an object with an empty ebo.")
     }
+
+    m_TriangleCount += elementBuffer->GetCount() / 3;
 
     if (m_Camera == nullptr) {
         ERROR_MSG("You are trying to render without camera.")
@@ -90,7 +92,10 @@ void Renderer::Render(const std::shared_ptr<ElementBuffer>& elementBuffer,
     glDrawElements(GL_TRIANGLES, elementBuffer->GetCount(), GL_UNSIGNED_INT, nullptr);
 }
 
-void Renderer::Clear() { glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); }
+void Renderer::Clear() {
+    m_TriangleCount = 0;
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
 
 void Renderer::OnEvent(const Event& event) {
     if (event.GetType() == EventType::WindowResize) {
