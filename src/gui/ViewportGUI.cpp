@@ -49,12 +49,14 @@ void ViewportGUI::OnEvent(const Event& event) {
         if (mousePos.x > m_ViewportPos.x && mousePos.x < m_ViewportSize.x - m_ViewportPos.x) {
             if (mousePos.y > m_ViewportPos.y && mousePos.y < m_ViewportSize.y - m_ViewportPos.y) {
                 glfwSetInputMode(window->GetHandler(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+                Application::GetInstance()->GetRenderer()->GetCamera()->CaptureMouse();
             }
         }
     }
 
     if (event.GetType() == EventType::MouseButtonReleased) {
         glfwSetInputMode(window->GetHandler(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+        Application::GetInstance()->GetRenderer()->GetCamera()->ReleaseMouse();
     }
 }
 

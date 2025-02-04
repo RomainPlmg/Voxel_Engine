@@ -107,13 +107,11 @@ void Camera::OnMouseEvent(const Event& event) {
     if (event.GetType() == EventType::MouseButtonPressed) {
         m_LastMousePosition.x = Input::GetMousePosition().x;
         m_LastMousePosition.y = Input::GetMousePosition().y;
-        m_CapturedMouse = true;
     }
 
     if (event.GetType() == EventType::MouseButtonReleased) {
         m_LastMousePosition.x = Input::GetMousePosition().x;
         m_LastMousePosition.y = Input::GetMousePosition().y;
-        m_CapturedMouse = false;
     }
 }
 
