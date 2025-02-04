@@ -12,6 +12,8 @@ class Color {
     float r, g, b, a;
 
     Color ToGLColor() const { return Color(r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f); }
+    glm::vec3 ToVec3() const { return glm::vec3(r / 255.0f, g / 255.0f, b / 255.0f); }
+    glm::vec3 ToVec4() const { return glm::vec4(r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f); }
 
     static const Color Black;
     static const Color White;
