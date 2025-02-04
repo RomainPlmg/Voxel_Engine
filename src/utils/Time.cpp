@@ -12,7 +12,7 @@ double Time::m_DeltaTime = 0.0f;
 uint32_t Time::m_FPS = 0;
 
 void Time::Update() {
-    const double currentTime = glfwGetTime();
+    const double currentTime = SDL_GetTicks();
 
     if (m_LastTime == 0) {
         m_LastTime = currentTime;

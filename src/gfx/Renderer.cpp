@@ -108,7 +108,7 @@ void Renderer::OnEvent(const Event& event) {
     }
     if (event.GetType() == EventType::KeyPressed) {
         const auto* keyEvent = dynamic_cast<const KeyPressedEvent*>(&event);
-        if (keyEvent->GetKeyCode() == GLFW_KEY_F3) {
+        if (keyEvent->GetKeyCode() == SDLK_F3) {
             if (m_PolygonMode == GL_FILL) {
                 SetPolygonMode(GL_LINE);
             } else {

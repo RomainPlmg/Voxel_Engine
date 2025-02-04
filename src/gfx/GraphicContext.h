@@ -7,19 +7,24 @@
 
 // clang-format off
 #include <glad/glad.h>
-#include <GLFW/glfw3.h> // Include GLFW after glad
+#include <SDL.h>
 // clang-format on
 
 class GraphicContext {
    public:
-    explicit GraphicContext(GLFWwindow* windowHandler);
+    explicit GraphicContext(SDL_Window* windowHandler);
 
-    void Init() const;
+    void Init();
+    void Destroy() const;
 
-    static std::shared_ptr<GraphicContext> Create(GLFWwindow* windowHandler);
+    /* Getters */
+    SDL_GLContext GetGLContext() const { return m_GLContext; }
+
+    static std::shared_ptr<GraphicContext> Create(SDL_Window* windowHandler);
 
    private:
-    GLFWwindow* m_Handler;
+    SDL_Window* m_Handler;
+    SDL_GLContext m_GLContext;
 };
 
 #endif  // OPENGLCONTEXT_H

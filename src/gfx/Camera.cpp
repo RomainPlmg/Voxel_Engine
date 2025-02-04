@@ -93,12 +93,12 @@ void Camera::Update() {
     m_LastMousePosition.x = Input::GetMousePosition().x;
     m_LastMousePosition.y = Input::GetMousePosition().y;
 
-    if (Input::IsKeyPressed(GLFW_KEY_W)) m_Position += frontXZ * velocity;
-    if (Input::IsKeyPressed(GLFW_KEY_S)) m_Position -= frontXZ * velocity;
-    if (Input::IsKeyPressed(GLFW_KEY_A)) m_Position -= rightXZ * velocity;
-    if (Input::IsKeyPressed(GLFW_KEY_D)) m_Position += rightXZ * velocity;
-    if (Input::IsKeyPressed(GLFW_KEY_SPACE)) m_Position += glm::vec3(0.0f, 1.0f, 0.0f) * velocity;
-    if (Input::IsKeyPressed(GLFW_KEY_LEFT_SHIFT)) m_Position -= glm::vec3(0.0f, 1.0f, 0.0f) * velocity;
+    if (Input::IsKeyPressed(SDLK_w)) m_Position += frontXZ * velocity;
+    if (Input::IsKeyPressed(SDLK_s)) m_Position -= frontXZ * velocity;
+    if (Input::IsKeyPressed(SDLK_a)) m_Position -= rightXZ * velocity;
+    if (Input::IsKeyPressed(SDLK_d)) m_Position += rightXZ * velocity;
+    if (Input::IsKeyPressed(SDLK_SPACE)) m_Position += glm::vec3(0.0f, 1.0f, 0.0f) * velocity;
+    if (Input::IsKeyPressed(SDLK_LSHIFT)) m_Position -= glm::vec3(0.0f, 1.0f, 0.0f) * velocity;
 }
 
 void Camera::OnMouseEvent(const Event& event) {

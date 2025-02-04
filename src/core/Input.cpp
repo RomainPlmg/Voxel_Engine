@@ -11,27 +11,31 @@
 bool Input::IsKeyPressed(const int keycode) {
     const auto window = Application::GetInstance()->GetWindow()->GetHandler();
 
-    const auto state = glfwGetKey(window, keycode);
-    return (state == GLFW_PRESS || state == GLFW_REPEAT);
+    const Uint8* state = SDL_GetKeyboardState(nullptr);
+    return (state[keycode] != 0);
 }
 
 bool Input::IsMouseButtonPressed(const int button) {
-    const auto window = Application::GetInstance()->GetWindow()->GetHandler();
+    const Uint32 state = SDL_GetMouseState(nullptr, nullptr);
 
-    const auto state = glfwGetMouseButton(window, button);
-    return (state == GLFW_PRESS || state == GLFW_REPEAT);
+    if (button == SDL_BUTTON_LEFT) {
+        return (state & SDL_BUTTON(SDL_BUTTON_LEFT)) != 0;
+    } else if (button == SDL_BUTTON_RIGHT) {
+        return (state & SDL_BUTTON(SDL_BUTTON_RIGHT)) != 0;
+    } else if (button == SDL_BUTTON_MIDDLE) {
+        return (state & SDL_BUTTON(SDL_BUTTON_MIDDLE)) != 0;
+    }
+
+    return false;
 }
 
 glm::dvec2 Input::GetMousePosition() {
-    const auto window = Application::GetInstance()->GetWindow()->GetHandler();
-
-    glm::dvec2 position;
-    glfwGetCursorPos(window, &position.x, &position.y);
-
+    glm::ivec2 position;
+    SDL_GetMouseState(&position.x, &position.y);
     return position;
 }
 
 void Input::SetMousePosition(double x, double y) {
     const auto window = Application::GetInstance()->GetWindow()->GetHandler();
-    glfwSetCursorPos(window, x, y);
+    SDL_WarpMouseInWindow(window, x, y);
 }

@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD 20)
 # Find OpenGL
 find_package(OpenGL REQUIRED)
 
-add_subdirectory(libs/glfw)
+add_subdirectory(libs/sdl2)
 add_subdirectory(libs/glad)
 add_subdirectory(libs/glm)
 add_subdirectory(libs/spdlog)
@@ -22,7 +22,7 @@ file(GLOB_RECURSE SRC
 file(GLOB IMGUI_SRC
         "libs/imgui/*.h"
         "libs/imgui/*.cpp"
-        "libs/imgui/backends/imgui_impl_glfw*"
+        "libs/imgui/backends/imgui_impl_sdl2*"
         "libs/imgui/backends/imgui_impl_opengl3*"
         "libs/imgui/misc/cpp/imgui_stdlib.*"
 )
@@ -32,7 +32,7 @@ add_executable(Voxel_Engine ${IMGUI_SRC} ${SRC})
 # Add include directories
 target_include_directories(Voxel_Engine PRIVATE
         "src"
-        "libs/glfw/include/"
+        "libs/sdl2/include/"
         "libs/glad/include/"
         "libs/glm/"
         "libs/spdlog/include/"
@@ -48,4 +48,4 @@ target_compile_definitions(Voxel_Engine PRIVATE ASSET_DIRECTORY="${CMAKE_SOURCE_
 target_precompile_headers(Voxel_Engine PRIVATE src/pch.h)
 
 # Link libraries to the project
-target_link_libraries(Voxel_Engine PRIVATE ${OPENGL_LIBRARY} glfw glad glm spdlog yaml-cpp)
+target_link_libraries(Voxel_Engine PRIVATE ${OPENGL_LIBRARY} SDL2::SDL2 glad glm spdlog yaml-cpp)

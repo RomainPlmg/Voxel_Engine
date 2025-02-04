@@ -7,7 +7,7 @@
 
 #include "pch.h"
 
-struct GLFWwindow;
+struct SDL_Window;
 
 class Input {
    public:
@@ -17,7 +17,7 @@ class Input {
     static void SetMousePosition(double x, double y);
 
    private:
-    static GLFWwindow* m_Handler;
+    static SDL_Window* m_Handler;
 };
 
 #endif  // INPUT_H

@@ -7,10 +7,11 @@
 #include "core/Application.h"
 #include "core/Window.h"
 #include "gfx/Buffer.h"
+#include "gfx/GraphicContext.h"
 #include "gfx/Renderer.h"
 #include "imgui.h"
-#include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
+#include "imgui_impl_sdl2.h"
 
 bool GUI::m_Open = true;
 
@@ -27,7 +28,8 @@ void GUI::Init() {
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
     (void)io;
     ImGui::StyleColorsDark();
-    ImGui_ImplGlfw_InitForOpenGL(Application::GetInstance()->GetWindow()->GetHandler(), true);
+    ImGui_ImplSDL2_InitForOpenGL(Application::GetInstance()->GetWindow()->GetHandler(),
+                                 Application::GetInstance()->GetWindow()->GetGraphicContext()->GetGLContext());
     ImGui_ImplOpenGL3_Init("#version 450");
 
     m_ViewportGUI->Init();
@@ -35,7 +37,7 @@ void GUI::Init() {
 
 void GUI::Render() {
     ImGui_ImplOpenGL3_NewFrame();
-    ImGui_ImplGlfw_NewFrame();
+    ImGui_ImplSDL2_NewFrame();
     ImGui::NewFrame();
 
     ImGui::DockSpaceOverViewport(0, ImGui::GetMainViewport());
@@ -50,7 +52,7 @@ void GUI::Render() {
 
 void GUI::Shutdown() {
     ImGui_ImplOpenGL3_Shutdown();
-    ImGui_ImplGlfw_Shutdown();
+    ImGui_ImplSDL2_Shutdown();
     ImGui::DestroyContext();
 }
 

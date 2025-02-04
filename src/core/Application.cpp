@@ -4,7 +4,6 @@
 
 #include "Application.h"
 
-#include "GLFW/glfw3.h"
 #include "Window.h"
 #include "events/Event.h"
 #include "events/EventDispatcher.h"
