@@ -4,15 +4,26 @@
 
 #include "DebugGUI.h"
 
+#include "core/Application.h"
 #include "imgui.h"
 #include "utils/Log.h"
 #include "utils/Monitor.h"
 #include "utils/Time.h"
+#include "world/World.h"
 
 DebugGUI::DebugGUI() : m_PlayerPos(glm::vec3(0)) {}
 
 void DebugGUI::Render() {
     ImGui::Begin("Debug", nullptr, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
+
+    static float col[3];
+    ImGui::ColorEdit3("Ambiant light color", col);
+    Application::GetInstance()->GetWorld()->SetAmbiantLightColor(
+        Color(col[0] * 255.0f, col[1] * 255.0f, col[2] * 255.0f));
+
+    float lightStrenght = Application::GetInstance()->GetWorld()->GetAmbiantLightStrenght();
+    ImGui::SliderFloat("Ambiant light strenght", &lightStrenght, 0, 1, "%.1f");
+    Application::GetInstance()->GetWorld()->SetAmbiantLightStrenght(lightStrenght);
 
     // Print FPS
     ImGui::Text("FPS: %d", Time::GetFPS());

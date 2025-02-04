@@ -25,6 +25,9 @@ class Renderer {
 
     void OnEvent(const Event& event);
 
+    /* Getters */
+    std::shared_ptr<Camera> GetCamera() const { return m_Camera; }
+
     /* Setters */
     void SetPolygonMode(GLenum polygonMode);
     void SetViewport(int width, int height);

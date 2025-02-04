@@ -7,7 +7,9 @@
 #include "core/Application.h"
 #include "gui/GUI.h"
 
-World::World() : m_RenderDistance(8) { m_Player = Player::Create(glm::vec3(0.0f, CHUNK_HEIGHT + 2, 0.0f)); }
+World::World() : m_RenderDistance(8), m_AmbiantLightStrenght(1.0f) {
+    m_Player = Player::Create(glm::vec3(0.0f, CHUNK_HEIGHT + 2, 0.0f));
+}
 
 void World::Init() {
     m_Player->Init();

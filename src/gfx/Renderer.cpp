@@ -16,6 +16,7 @@
 #include "events/EventKeyboard.h"
 #include "gfx/GraphicContext.h"
 #include "utils/Log.h"
+#include "world/World.h"
 
 // Define the message callback function
 static void OpenGLMessageCallback(unsigned source, unsigned type, unsigned id, unsigned severity, int length,
@@ -82,6 +83,9 @@ void Renderer::Render(const std::shared_ptr<ElementBuffer>& elementBuffer,
 
     shader->SetUniformMat4("projMatrix", m_ProjMatrix);
     shader->SetUniformMat4("viewMatrix", m_Camera->GetViewMatrix());
+    shader->SetUniformFloat3("ambientLightColor",
+                             Application::GetInstance()->GetWorld()->GetAmbiantLightColor().ToVec3());
+    shader->SetUniformFloat("ambiantLightStrength", Application::GetInstance()->GetWorld()->GetAmbiantLightStrenght());
 
     glDrawElements(GL_TRIANGLES, elementBuffer->GetCount(), GL_UNSIGNED_INT, nullptr);
 }

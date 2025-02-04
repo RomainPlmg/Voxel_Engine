@@ -18,7 +18,7 @@ Chunk::Chunk(const glm::ivec2 position) : m_WorldPosition(position) {
         for (int z = 0; z < CHUNK_WIDTH; z++) {
             for (int x = 0; x < CHUNK_WIDTH; x++) {
                 const int i = x + CHUNK_WIDTH * (y + CHUNK_HEIGHT * z);
-                m_Cubes[i] = std::make_shared<Cube>(glm::ivec3(x, y, z));
+                m_Cubes[i] = std::make_shared<Cube>(glm::ivec3(x, y, z), Color::White);
             }
         }
     }

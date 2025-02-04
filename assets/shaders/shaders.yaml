@@ -2,9 +2,9 @@ shader_programs:
   - name: BASIC
     shaders:
       - type: vertex
-        file: basic.vsh
+        file: basic.vert
       - type: fragment
-        file: basic.fsh
+        file: basic.frag
     layout:
       - type: float3
         name: vertices

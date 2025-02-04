@@ -63,7 +63,14 @@ void ShaderProgram::SetUniformFloat(const std::string& name, const float value) 
 
 void ShaderProgram::SetUniformFloat2(const std::string& name, const glm::vec2& value) const {}
 
-void ShaderProgram::SetUniformFloat3(const std::string& name, const glm::vec3& value) const {}
+void ShaderProgram::SetUniformFloat3(const std::string& name, const glm::vec3& value) const {
+    const GLint uniformLoc = glGetUniformLocation(m_RendererID, name.c_str());
+
+    if (uniformLoc == -1) {
+        WARN_MSG("Warning: Unable to find the uniform \'{0}\'", name);
+    }
+    glUniform3f(uniformLoc, value.x, value.y, value.z);
+}
 
 void ShaderProgram::SetUniformFloat4(const std::string& name, const glm::vec4& value) const {}
 
