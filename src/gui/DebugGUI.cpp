@@ -27,7 +27,7 @@ void DebugGUI::Render() {
     Application::GetInstance()->GetWorld()->SetAmbiantLightStrenght(lightStrenght);
 
     // Print FPS
-    ImGui::Text("Application average %.3f ms/frame (%d FPS)", Time::GetDeltaTime(), Time::GetFPS());
+    ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", Time::GetDeltaTime(), Time::GetFPS());
 
     // Print RAM consumption
     ImGui::Text("RAM: %d MB", Monitor::GetRAMConsumption() / 1000);

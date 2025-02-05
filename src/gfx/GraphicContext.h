@@ -7,7 +7,7 @@
 
 // clang-format off
 #include <glad/glad.h>
-#include <SDL.h>
+#include <SDL2/SDL.h>
 // clang-format on
 
 class GraphicContext {

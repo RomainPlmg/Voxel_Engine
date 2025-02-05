@@ -10,17 +10,17 @@
 class Time {
    private:
     static Time* m_Instance;
-    static double m_LastTime;   // Time since last call
-    static double m_DeltaTime;  // Elapsed time between two frames
-    static uint32_t m_FPS;
+    static uint32_t m_LastTime;  // Time since last call
+    static double m_DeltaTime;   // Elapsed time between two frames
+    static float m_FPS;
 
    public:
     // Call this method at the start of each frame
     static void Update();
 
-    // Return deltaTime in seconds
+    // Return deltaTime in second
     static double GetDeltaTime() { return m_DeltaTime; }
-    static uint32_t GetFPS() { return m_FPS; }
+    static float GetFPS() { return m_FPS; }
 };
 
 #endif  // TIME_H

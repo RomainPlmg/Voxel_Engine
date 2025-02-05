@@ -10,6 +10,7 @@
 #include "events/EventKeyboard.h"
 #include "events/EventMouse.h"
 #include "gfx/GraphicContext.h"
+#include "imgui_impl_sdl2.h"
 #include "utils/Log.h"
 
 Window::Window(const WindowProps& props) : m_Properties(props), m_Handler(nullptr), m_IsRunning(true) {}
@@ -21,7 +22,7 @@ void Window::Init(const bool automatic) {
     }
 
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);                           // OpenGL 4.x
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 6);                           // OpenGL 4.6
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 5);                           // OpenGL 4.6
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);  // Core Profile
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);                                    // Enable double buffering
 
@@ -63,10 +64,12 @@ void Window::Init(const bool automatic) {
 
 void Window::Update() {
     while (SDL_PollEvent(&m_Event)) {
+        ImGui_ImplSDL2_ProcessEvent(&m_Event);
+
         Event* tmpEvent = nullptr;
         switch (m_Event.type) {
             case SDL_QUIT:
-                /* code */
+                Close();
                 break;
 
             case SDL_WINDOWEVENT:
@@ -77,7 +80,6 @@ void Window::Update() {
                     tmpEvent = new WindowMovedEvent(m_Event.window.data1, m_Event.window.data2);
                     m_EventDispatcher->Dispatch(*tmpEvent);
                 }
-
                 break;
 
             case SDL_KEYDOWN:

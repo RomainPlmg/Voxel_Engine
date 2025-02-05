@@ -4,21 +4,22 @@
 
 #include "Time.h"
 
+#include "Log.h"
 #include "gfx/GraphicContext.h"
 
 Time* Time::m_Instance = new Time();
-double Time::m_LastTime = 0.0;
-double Time::m_DeltaTime = 0.0f;
-uint32_t Time::m_FPS = 0;
+uint32_t Time::m_LastTime = 0;
+double Time::m_DeltaTime = 0.0;
+float Time::m_FPS = 0.0f;
 
 void Time::Update() {
-    const double currentTime = SDL_GetTicks();
+    uint32_t currentTime = SDL_GetTicks();
 
     if (m_LastTime == 0) {
         m_LastTime = currentTime;
     }
-    m_DeltaTime = (currentTime - m_LastTime);
-    m_FPS = static_cast<uint32_t>(std::floor(1.0f / m_DeltaTime));
+    m_DeltaTime = static_cast<double>(currentTime - m_LastTime) / 1000.0;
+    m_FPS = 1.0f / m_DeltaTime;
 
     m_LastTime = currentTime;
 }

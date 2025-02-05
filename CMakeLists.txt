@@ -3,6 +3,8 @@ project(Voxel_Engine)
 
 set(CMAKE_CXX_STANDARD 20)
 
+set(SDL_SHARED OFF) 
+
 # Find OpenGL
 find_package(OpenGL REQUIRED)
 
@@ -48,4 +50,4 @@ target_compile_definitions(Voxel_Engine PRIVATE ASSET_DIRECTORY="${CMAKE_SOURCE_
 target_precompile_headers(Voxel_Engine PRIVATE src/pch.h)
 
 # Link libraries to the project
-target_link_libraries(Voxel_Engine PRIVATE ${OPENGL_LIBRARY} SDL2::SDL2 glad glm spdlog yaml-cpp)
+target_link_libraries(Voxel_Engine PRIVATE ${OPENGL_LIBRARY} SDL2-static glad glm spdlog yaml-cpp)
