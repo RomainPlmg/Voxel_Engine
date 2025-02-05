@@ -18,18 +18,18 @@ void DebugGUI::Render() {
     ImGui::Begin("Debug", nullptr, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
 
     // Light color
-    static float col[3];
+    static float col[3] = {1.0f, 1.0f, 1.0f};
     ImGui::ColorEdit3("Ambiant light color", col);
     Application::GetInstance()->GetWorld()->SetAmbiantLightColor(
         Color(col[0] * 255.0f, col[1] * 255.0f, col[2] * 255.0f));
 
     // Light strenght
-    static float lightStrenght;
+    static float lightStrenght = 0.8f;
     ImGui::SliderFloat("Ambiant light strenght", &lightStrenght, 0, 1, "%.3f");
     Application::GetInstance()->GetWorld()->SetAmbiantLightStrenght(lightStrenght);
 
     // Enable wireframe view
-    static bool wireframe;
+    static bool wireframe = false;
     ImGui::Checkbox("Wireframe", &wireframe);
     if (wireframe) {
         Application::GetInstance()->GetRenderer()->SetPolygonMode(GL_LINE);
@@ -38,7 +38,7 @@ void DebugGUI::Render() {
     }
 
     // Enable back face culling
-    static bool backfaceCulling;
+    static bool backfaceCulling = true;
     ImGui::Checkbox("Backface Culling", &backfaceCulling);
     if (backfaceCulling) {
         Application::GetInstance()->GetRenderer()->SetBackfaceCulling(true);
