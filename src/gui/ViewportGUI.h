@@ -22,7 +22,7 @@ class ViewportGUI {
     static std::shared_ptr<ViewportGUI> Create();
 
    private:
-    ImVec2 m_ViewportSize, m_ViewportPos;
+    ImVec2 m_ViewportSize;
     std::shared_ptr<FrameBuffer> m_FrameBuffer;
 };
 

@@ -21,7 +21,6 @@ void ViewportGUI::Render() {
     ImGui::Begin("Viewport", nullptr, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoCollapse);
     ImVec2 oldViewPortSize = m_ViewportSize;
     m_ViewportSize = ImGui::GetContentRegionAvail();
-    m_ViewportPos = ImGui::GetWindowPos();
 
     if (ImGui::IsWindowHovered() && ImGui::IsMouseClicked(ImGuiMouseButton_Middle)) {
         SDL_SetRelativeMouseMode(SDL_TRUE);
