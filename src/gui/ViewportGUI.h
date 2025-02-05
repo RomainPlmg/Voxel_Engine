@@ -18,7 +18,6 @@ class ViewportGUI {
 
     void Init();
     void Render();
-    void OnEvent(const Event &event);
 
     static std::shared_ptr<ViewportGUI> Create();
 
