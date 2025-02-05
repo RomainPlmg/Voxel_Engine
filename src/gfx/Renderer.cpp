@@ -89,11 +89,13 @@ void Renderer::Render(const std::shared_ptr<ElementBuffer>& elementBuffer,
                              Application::GetInstance()->GetWorld()->GetAmbiantLightColor().ToVec3());
     shader->SetUniformFloat("ambiantLightStrength", Application::GetInstance()->GetWorld()->GetAmbiantLightStrenght());
 
+    m_DrawCallCount++;
     glDrawElements(GL_TRIANGLES, elementBuffer->GetCount(), GL_UNSIGNED_INT, nullptr);
 }
 
 void Renderer::Clear() {
     m_TriangleCount = 0;
+    m_DrawCallCount = 0;
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 

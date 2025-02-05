@@ -69,6 +69,8 @@ void DebugGUI::Render() {
     ImGui::Text("Triangle count: %.3fK",
                 static_cast<double>(Application::GetInstance()->GetRenderer()->GetTriangleCount()) / 1000.0);
 
+    ImGui::Text("Draw calls: %d", Application::GetInstance()->GetRenderer()->GetDrawCallCount());
+
     ImVec2 contentSize = ImGui::GetContentRegionAvail();
     contentSize.x = 200.0f;
 

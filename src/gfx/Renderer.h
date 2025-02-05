@@ -27,6 +27,7 @@ class Renderer {
     /* Getters */
     std::shared_ptr<Camera> GetCamera() const { return m_Camera; }
     unsigned long GetTriangleCount() const { return m_TriangleCount; }
+    int GetDrawCallCount() const { return m_DrawCallCount; }
 
     /* Setters */
     void SetPolygonMode(GLenum polygonMode);
@@ -42,6 +43,7 @@ class Renderer {
     glm::mat4 m_ProjMatrix;
     std::shared_ptr<Camera> m_Camera;
     unsigned long m_TriangleCount;
+    int m_DrawCallCount;
 };
 
 #endif  // RENDERER_H
