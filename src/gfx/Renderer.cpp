@@ -108,16 +108,6 @@ void Renderer::OnEvent(const Event& event) {
         const float matrixHeight = wrEvent->height <= 0 ? 1.0f : static_cast<float>(wrEvent->height);
         m_ProjMatrix = glm::perspective(glm::radians(45.0f), matrixWidth / matrixHeight, 0.1f, 300.0f);
     }
-    if (event.GetType() == EventType::KeyPressed) {
-        const auto* keyEvent = dynamic_cast<const KeyPressedEvent*>(&event);
-        if (keyEvent->GetKeyCode() == SDLK_F3) {
-            if (m_PolygonMode == GL_FILL) {
-                SetPolygonMode(GL_LINE);
-            } else {
-                SetPolygonMode(GL_FILL);
-            }
-        }
-    }
 }
 
 void Renderer::SetPolygonMode(GLenum polygonMode) {
