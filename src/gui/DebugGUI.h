@@ -8,6 +8,9 @@
 // The debug refresh rate in second
 constexpr double DEBUG_GUI_REFRESH_RATE = 0.25;
 
+#define GL_LINE 0x1B01
+#define GL_FILL 0x1B02
+
 class DebugGUI {
    public:
     DebugGUI();

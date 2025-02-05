@@ -17,14 +17,34 @@ DebugGUI::DebugGUI() : m_PlayerPos(glm::vec3(0)), m_DebugLastFrameTime(0), m_Deb
 void DebugGUI::Render() {
     ImGui::Begin("Debug", nullptr, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
 
+    // Light color
     static float col[3];
     ImGui::ColorEdit3("Ambiant light color", col);
     Application::GetInstance()->GetWorld()->SetAmbiantLightColor(
         Color(col[0] * 255.0f, col[1] * 255.0f, col[2] * 255.0f));
 
-    float lightStrenght = Application::GetInstance()->GetWorld()->GetAmbiantLightStrenght();
-    ImGui::SliderFloat("Ambiant light strenght", &lightStrenght, 0, 1, "%.1f");
+    // Light strenght
+    static float lightStrenght;
+    ImGui::SliderFloat("Ambiant light strenght", &lightStrenght, 0, 1, "%.3f");
     Application::GetInstance()->GetWorld()->SetAmbiantLightStrenght(lightStrenght);
+
+    // Enable wireframe view
+    static bool wireframe;
+    ImGui::Checkbox("Wireframe", &wireframe);
+    if (wireframe) {
+        Application::GetInstance()->GetRenderer()->SetPolygonMode(GL_LINE);
+    } else {
+        Application::GetInstance()->GetRenderer()->SetPolygonMode(GL_FILL);
+    }
+
+    // Enable back face culling
+    static bool backfaceCulling;
+    ImGui::Checkbox("Backface Culling", &backfaceCulling);
+    if (backfaceCulling) {
+        Application::GetInstance()->GetRenderer()->SetBackfaceCulling(true);
+    } else {
+        Application::GetInstance()->GetRenderer()->SetBackfaceCulling(false);
+    }
 
     // Print FPS
     if (static_cast<double>(Time::GetCurrentTime() - m_DebugLastFrameTime) /

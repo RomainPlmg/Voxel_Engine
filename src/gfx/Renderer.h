@@ -33,6 +33,7 @@ class Renderer {
     void SetViewport(int width, int height);
     void SetClearColor(float r, float g, float b, float a);
     void SetCamera(const std::shared_ptr<Camera>& camera);
+    void SetBackfaceCulling(bool bfculling);
 
     static std::shared_ptr<Renderer> Create();
 

@@ -132,4 +132,12 @@ void Renderer::SetClearColor(const float r, const float g, const float b, const 
 
 void Renderer::SetCamera(const std::shared_ptr<Camera>& camera) { m_Camera = camera; }
 
+void Renderer::SetBackfaceCulling(bool bfculling) {
+    if (bfculling) {
+        glEnable(GL_CULL_FACE);
+    } else {
+        glDisable(GL_CULL_FACE);
+    }
+}
+
 std::shared_ptr<Renderer> Renderer::Create() { return std::make_shared<Renderer>(); }
