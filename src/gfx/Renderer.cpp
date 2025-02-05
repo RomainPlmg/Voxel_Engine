@@ -19,7 +19,7 @@
 #include "world/World.h"
 
 // Define the message callback function
-static void OpenGLMessageCallback(unsigned source, unsigned type, unsigned id, unsigned severity, int length,
+static void APIENTRY OpenGLMessageCallback(unsigned source, unsigned type, unsigned id, unsigned severity, int length,
                                   const char* message, const void* userParam) {
     switch (severity) {
         case GL_DEBUG_SEVERITY_HIGH:
