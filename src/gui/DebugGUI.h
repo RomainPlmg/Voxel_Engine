@@ -5,6 +5,9 @@
 #ifndef DEBUG_GUI_H
 #define DEBUG_GUI_H
 
+// The debug refresh rate in second
+constexpr double DEBUG_GUI_REFRESH_RATE = 0.25;
+
 class DebugGUI {
    public:
     DebugGUI();
@@ -19,6 +22,11 @@ class DebugGUI {
 
    private:
     glm::vec3 m_PlayerPos;
+
+    // Used to update the FPS text
+    uint64_t m_DebugLastFrameTime;
+    double m_DebugDeltaTime;
+    double m_DebugFPS;
 };
 
 #endif  // DEBUG_GUI_H

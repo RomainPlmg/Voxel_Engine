@@ -12,7 +12,7 @@
 #include "utils/Time.h"
 #include "world/World.h"
 
-DebugGUI::DebugGUI() : m_PlayerPos(glm::vec3(0)) {}
+DebugGUI::DebugGUI() : m_PlayerPos(glm::vec3(0)), m_DebugLastFrameTime(0), m_DebugFPS(0.0), m_DebugDeltaTime(0.0) {}
 
 void DebugGUI::Render() {
     ImGui::Begin("Debug", nullptr, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
@@ -27,7 +27,15 @@ void DebugGUI::Render() {
     Application::GetInstance()->GetWorld()->SetAmbiantLightStrenght(lightStrenght);
 
     // Print FPS
-    ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", Time::GetDeltaTime(), Time::GetFPS());
+    if (static_cast<double>(Time::GetCurrentTime() - m_DebugLastFrameTime) /
+            static_cast<double>(Time::GetCounterFreq()) >
+        DEBUG_GUI_REFRESH_RATE) {
+        m_DebugDeltaTime = static_cast<double>(Time::GetDeltaTime()) * 1000.0;
+        m_DebugFPS = Time::GetFPS();
+
+        m_DebugLastFrameTime = Time::GetCurrentTime();
+    }
+    ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", m_DebugDeltaTime, m_DebugFPS);
 
     // Print RAM consumption
     ImGui::Text("RAM: %d MB", Monitor::GetRAMConsumption() / 1000);
