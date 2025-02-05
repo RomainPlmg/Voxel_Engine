@@ -4,6 +4,7 @@
 
 #include "GUI.h"
 
+#include "IconsMaterialSymbols.h"
 #include "core/Application.h"
 #include "core/Window.h"
 #include "gfx/Buffer.h"
@@ -16,6 +17,9 @@
 bool GUI::m_Open = true;
 
 GUI::GUI() {
+    m_FontSize = 15.0f;
+    m_IconFontSize = m_FontSize * 1.2f;
+
     m_DebugGUI = DebugGUI::Create();
     m_ViewportGUI = ViewportGUI::Create();
 }
@@ -24,7 +28,17 @@ void GUI::Init() {
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO();
-    io.Fonts->AddFontFromFileTTF(ASSET_DIRECTORY "fonts/JetBrainsMono-Regular.ttf", 18.0f);
+    io.Fonts->AddFontFromFileTTF(ASSET_DIRECTORY "fonts/JetBrainsMono-Regular.ttf", m_FontSize);
+
+    static const ImWchar icons_ranges[] = {ICON_MIN_MS, ICON_MAX_16_MS, 0};
+    ImFontConfig icons_config;
+    icons_config.MergeMode = true;
+    icons_config.PixelSnapH = true;
+    icons_config.GlyphMinAdvanceX = m_IconFontSize;
+
+    io.Fonts->AddFontFromFileTTF(ASSET_DIRECTORY "fonts/" FONT_ICON_FILE_NAME_MSS, m_IconFontSize, &icons_config,
+                                 icons_ranges);
+
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
     (void)io;
     ImGui::StyleColorsDark();

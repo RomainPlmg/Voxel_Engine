@@ -28,6 +28,7 @@ class GUI {
     static bool m_Open;
     std::shared_ptr<DebugGUI> m_DebugGUI;
     std::shared_ptr<ViewportGUI> m_ViewportGUI;
+    float m_FontSize, m_IconFontSize;
 };
 
 #endif  // GUI_H

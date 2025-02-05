@@ -39,6 +39,7 @@ target_include_directories(Voxel_Engine PRIVATE
         "libs/glm/"
         "libs/spdlog/include/"
         "libs/yaml-cpp/include/"
+        "libs/icon-font"
         "libs/imgui/"
         "libs/imgui/backends/"
         "libs/imgui/misc/cpp"

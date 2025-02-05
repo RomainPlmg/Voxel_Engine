@@ -4,6 +4,7 @@
 
 #include "DebugGUI.h"
 
+#include "IconsMaterialSymbols.h"
 #include "core/Application.h"
 #include "gfx/Renderer.h"
 #include "imgui.h"
@@ -19,13 +20,13 @@ void DebugGUI::Render() {
 
     // Light color
     static float col[3] = {1.0f, 1.0f, 1.0f};
-    ImGui::ColorEdit3("Ambiant light color", col);
+    ImGui::ColorEdit3(ICON_MS_PALETTE " Light color", col);
     Application::GetInstance()->GetWorld()->SetAmbiantLightColor(
         Color(col[0] * 255.0f, col[1] * 255.0f, col[2] * 255.0f));
 
     // Light strenght
     static float lightStrenght = 0.8f;
-    ImGui::SliderFloat("Ambiant light strenght", &lightStrenght, 0, 1, "%.3f");
+    ImGui::SliderFloat(ICON_MS_LIGHT_MODE " Light strenght", &lightStrenght, 0, 1, "%.3f");
     Application::GetInstance()->GetWorld()->SetAmbiantLightStrenght(lightStrenght);
 
     // Enable wireframe view
