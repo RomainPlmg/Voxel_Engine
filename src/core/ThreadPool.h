@@ -14,7 +14,7 @@ class ThreadPool {
 
     using Task = std::function<void()>;
 
-    void Enqueue(Task task);  // Add a task to the queue
+    std::future<void> Enqueue(Task task);  // Add a task to the queue
 
     static std::shared_ptr<ThreadPool> Create(uint32_t numThreads);
 
@@ -32,8 +32,5 @@ class ThreadPool {
                           // 2. Run the task
                           // 3. Wait for the next one
 };
-
-#define BIND_THREADED_FN(fn) \
-    [this](auto&&... args) -> decltype(auto) { return this->fn(std::forward<decltype(args)>(args)...); }
 
 #endif  // THREADPOOL_H

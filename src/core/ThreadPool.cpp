@@ -3,6 +3,8 @@
 // Created by Romain on 06/02/2024.
 //
 
+#include "utils/Log.h"
+
 ThreadPool::ThreadPool(uint32_t numThreads) : m_Stop(false) {
     for (uint32_t i = 0; i < numThreads; i++) {
         // Each thread executes the workerThread() method
@@ -23,12 +25,18 @@ ThreadPool::~ThreadPool() {
     }
 }
 
-void ThreadPool::Enqueue(Task task) {
+std::future<void> ThreadPool::Enqueue(Task f) {
+    auto task = std::make_shared<std::packaged_task<void()>>(std::move(f));
+
+    std::future<void> res = task->get_future();
     {
-        std::unique_lock<std::mutex> lock(m_QueueMutex);  // We lock access to the task queue
-        m_Tasks.push(task);                               // Add the task to the queue
+        std::unique_lock<std::mutex> lock(m_QueueMutex);
+        if (m_Stop) FATAL_MSG("Enqueue on stopped ThreadPool");
+
+        m_Tasks.emplace([task]() { (*task)(); });
     }
-    m_Condition.notify_one();  // Wakes up a waiting thread to execute the task
+    m_Condition.notify_one();
+    return res;
 }
 
 std::shared_ptr<ThreadPool> ThreadPool::Create(uint32_t numThreads) { return std::make_shared<ThreadPool>(numThreads); }
