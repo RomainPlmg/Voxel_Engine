@@ -4,6 +4,7 @@
 
 #include "Application.h"
 
+#include "ThreadPool.h"
 #include "Window.h"
 #include "events/Event.h"
 #include "events/EventDispatcher.h"
@@ -22,6 +23,7 @@ Application::Application() : m_PauseMode(false) {
     m_Renderer = Renderer::Create();
     m_GUI = GUI::Create();
     m_World = World::Create();
+    m_ThreadPool = ThreadPool::Create(8);
 }
 
 void Application::Init() {
@@ -31,8 +33,9 @@ void Application::Init() {
 
     // To initialize AFTER shaders
     m_GUI->Init();
-    m_World->Init();
+
     INFO_MSG("Engine initialized");
+    m_World->Init();
 
     m_Window->GetEventDispatcher()->Subscribe(EventCategoryKeyboard, BIND_EVENT_FN(Application::OnEvent));
 }
