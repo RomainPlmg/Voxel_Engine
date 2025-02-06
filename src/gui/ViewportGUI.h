@@ -13,16 +13,20 @@ class Event;
 
 class ViewportGUI {
    public:
-    ViewportGUI() = default;
+    ViewportGUI();
     ~ViewportGUI() = default;
 
     void Init();
     void Render();
 
+    /* Getters */
+    glm::mat4 GetProjMatrix() const { return m_ProjMatrix; }
+
     static std::shared_ptr<ViewportGUI> Create();
 
    private:
     ImVec2 m_ViewportSize;
+    glm::mat4 m_ProjMatrix;
     std::shared_ptr<FrameBuffer> m_FrameBuffer;
 };
 

@@ -4,6 +4,8 @@
 
 #include "ViewportGUI.h"
 
+#include <glm/gtc/matrix_transform.hpp>
+
 #include "core/Application.h"
 #include "core/Input.h"
 #include "core/Window.h"
@@ -15,6 +17,8 @@
 #include "pch.h"
 #include "world/World.h"
 
+ViewportGUI::ViewportGUI() : m_ProjMatrix(glm::mat4(1.0f)) {}
+
 void ViewportGUI::Init() { m_FrameBuffer = FrameBuffer::Create(1, 1); }
 
 void ViewportGUI::Render() {
@@ -23,18 +27,22 @@ void ViewportGUI::Render() {
     m_ViewportSize = ImGui::GetContentRegionAvail();
 
     if (ImGui::IsWindowHovered() && ImGui::IsMouseClicked(ImGuiMouseButton_Middle)) {
-        SDL_SetRelativeMouseMode(SDL_TRUE);
         Application::GetInstance()->GetRenderer()->GetCamera()->CaptureMouse();
     } else if (ImGui::IsMouseReleased(ImGuiMouseButton_Middle)) {
-        SDL_SetRelativeMouseMode(SDL_FALSE);
         Application::GetInstance()->GetRenderer()->GetCamera()->ReleaseMouse();
     }
 
-    m_FrameBuffer->Bind();
     if (m_ViewportSize.x > 0 && m_ViewportSize.y > 0 &&
         (oldViewPortSize.x != m_ViewportSize.x || oldViewPortSize.y != m_ViewportSize.y)) {
+        Application::GetInstance()->GetRenderer()->SetViewport(m_ViewportSize.x, m_ViewportSize.y);
         m_FrameBuffer->Resize(static_cast<int>(m_ViewportSize.x), static_cast<int>(m_ViewportSize.y));
+
+        float aspectRatio = m_ViewportSize.x / m_ViewportSize.y;
+
+        m_ProjMatrix = glm::perspective(glm::radians(45.0f), aspectRatio, 0.1f, 300.0f);
     }
+
+    m_FrameBuffer->Bind();
     Application::GetInstance()->GetRenderer()->Clear();
     Application::GetInstance()->GetWorld()->Draw();
     m_FrameBuffer->Unbind();

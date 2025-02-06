@@ -40,7 +40,6 @@ class Renderer {
 
    private:
     GLenum m_PolygonMode;
-    glm::mat4 m_ProjMatrix;
     std::shared_ptr<Camera> m_Camera;
     unsigned long m_TriangleCount;
     int m_DrawCallCount;

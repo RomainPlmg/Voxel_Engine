@@ -4,8 +4,6 @@
 
 #include "Renderer.h"
 
-#include <glm/gtc/matrix_transform.hpp>
-
 #include "Buffer.h"
 #include "Camera.h"
 #include "Shader.h"
@@ -15,12 +13,14 @@
 #include "events/EventDispatcher.h"
 #include "events/EventKeyboard.h"
 #include "gfx/GraphicContext.h"
+#include "gui/GUI.h"
+#include "gui/ViewportGUI.h"
 #include "utils/Log.h"
 #include "world/World.h"
 
 // Define the message callback function
 static void APIENTRY OpenGLMessageCallback(unsigned source, unsigned type, unsigned id, unsigned severity, int length,
-                                  const char* message, const void* userParam) {
+                                           const char* message, const void* userParam) {
     switch (severity) {
         case GL_DEBUG_SEVERITY_HIGH:
             FATAL_MSG(message);
@@ -40,18 +40,13 @@ static void APIENTRY OpenGLMessageCallback(unsigned source, unsigned type, unsig
     FATAL_MSG("Unknown severity level");
 }
 
-Renderer::Renderer() : m_ProjMatrix(glm::mat4(1.0f)), m_PolygonMode(GL_FILL), m_TriangleCount(0) {}
+Renderer::Renderer() : m_PolygonMode(GL_FILL), m_TriangleCount(0) {}
 
 void Renderer::Init() {
     Application::GetInstance()->GetWindow()->GetEventDispatcher()->Subscribe(EventCategoryApplication,
                                                                              BIND_EVENT_FN(Renderer::OnEvent));
     Application::GetInstance()->GetWindow()->GetEventDispatcher()->Subscribe(EventCategoryKeyboard,
                                                                              BIND_EVENT_FN(Renderer::OnEvent));
-
-    m_ProjMatrix = glm::perspective(glm::radians(45.0f),
-                                    static_cast<float>(Application::GetInstance()->GetWindow()->GetWidth()) /
-                                        static_cast<float>(Application::GetInstance()->GetWindow()->GetHeight()),
-                                    0.1f, 300.0f);
 
 #ifndef _NDEBUG
     glEnable(GL_DEBUG_OUTPUT);
@@ -83,7 +78,7 @@ void Renderer::Render(const std::shared_ptr<ElementBuffer>& elementBuffer,
         return;
     }
 
-    shader->SetUniformMat4("projMatrix", m_ProjMatrix);
+    shader->SetUniformMat4("projMatrix", Application::GetInstance()->GetGUI()->GetViewport()->GetProjMatrix());
     shader->SetUniformMat4("viewMatrix", m_Camera->GetViewMatrix());
     shader->SetUniformFloat3("ambientLightColor",
                              Application::GetInstance()->GetWorld()->GetAmbiantLightColor().ToVec3());
@@ -102,11 +97,7 @@ void Renderer::Clear() {
 void Renderer::OnEvent(const Event& event) {
     if (event.GetType() == EventType::WindowResize) {
         const auto* wrEvent = dynamic_cast<const WindowResizeEvent*>(&event);
-        SetViewport(wrEvent->width, wrEvent->height);
-
-        const float matrixWidth = wrEvent->width <= 0 ? 1.0f : static_cast<float>(wrEvent->width);
-        const float matrixHeight = wrEvent->height <= 0 ? 1.0f : static_cast<float>(wrEvent->height);
-        m_ProjMatrix = glm::perspective(glm::radians(45.0f), matrixWidth / matrixHeight, 0.1f, 300.0f);
+        // SetViewport(wrEvent->width, wrEvent->height);
     }
 }
 
