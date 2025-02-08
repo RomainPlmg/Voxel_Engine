@@ -4,6 +4,7 @@
 
 #include "Chunk.h"
 
+#include "World.h"
 #include "core/Application.h"
 #include "gfx/Renderer.h"
 #include "gfx/Shader.h"
@@ -22,13 +23,12 @@ Chunk::Chunk(const glm::ivec2 position) : m_WorldPosition(position) {
             }
         }
     }
-
-    Update();
 }
 
 void Chunk::Update() {
     m_Vertices.clear();
     m_Indices.clear();
+
     for (const auto& cube : m_Cubes) {
         for (int i = 0; i < 6; i++) {
             auto face = static_cast<Cube::Face>(i);
@@ -50,6 +50,9 @@ void Chunk::Update() {
             }
         }
     }
+
+    auto world = Application::GetInstance()->GetWorld();
+    UpdateBoundaryFaces(world);
 }
 
 void Chunk::Draw() {
@@ -83,10 +86,59 @@ void Chunk::Draw() {
 std::shared_ptr<Cube> Chunk::GetCubeAtPosition(const glm::ivec3& cubePosition) const {
     int i = cubePosition.x + CHUNK_WIDTH * (cubePosition.y + CHUNK_HEIGHT * cubePosition.z);
     if (i > CHUNK_WIDTH * CHUNK_WIDTH * CHUNK_HEIGHT) {
-        WARN_MSG("Index {} is out of bounds of the chunk.", i);
+        WARN_MSG("Index {} is out of bounds of the this->", i);
         return nullptr;
     }
     return m_Cubes[i];
+}
+
+void Chunk::UpdateBoundaryFaces(std::shared_ptr<World> world) {
+    auto chunks = world->GetChunks();
+
+    auto rightChunk = chunks.find(glm::ivec2(this->GetWorldPosition().x + 1, this->GetWorldPosition().y));  // Right
+    auto leftChunk = chunks.find(glm::ivec2(this->GetWorldPosition().x - 1, this->GetWorldPosition().y));   // Left
+    auto frontChunk = chunks.find(glm::ivec2(this->GetWorldPosition().x, this->GetWorldPosition().y + 1));  // Front
+    auto backChunk = chunks.find(glm::ivec2(this->GetWorldPosition().x, this->GetWorldPosition().y - 1));   // Back
+
+    for (const auto& cube : this->GetBoundaryCubes()) {  // Recover all boundary cubes
+        for (int i = 0; i < 6; i++) {
+            auto face = static_cast<Cube::Face>(i);
+            if (cube->GetChunkPosition().x == CHUNK_WIDTH - 1 && face == Cube::Face::Right) {
+                if (rightChunk != chunks.end() &&
+                    rightChunk->second
+                        .GetCubeAtPosition(glm::ivec3(0, cube->GetChunkPosition().y, cube->GetChunkPosition().z))
+                        ->IsTransparent()) {
+                    cube->SetFaceVisible(face);
+                }
+            }
+            if (cube->GetChunkPosition().x == 0 && face == Cube::Face::Left) {
+                if (leftChunk != chunks.end() &&
+                    leftChunk->second
+                        .GetCubeAtPosition(
+                            glm::ivec3(CHUNK_WIDTH - 1, cube->GetChunkPosition().y, cube->GetChunkPosition().z))
+                        ->IsTransparent()) {
+                    cube->SetFaceVisible(face);
+                }
+            }
+            if (cube->GetChunkPosition().z == CHUNK_WIDTH - 1 && face == Cube::Face::Front) {
+                if (frontChunk != chunks.end() &&
+                    frontChunk->second
+                        .GetCubeAtPosition(glm::ivec3(cube->GetChunkPosition().x, cube->GetChunkPosition().y, 0))
+                        ->IsTransparent()) {
+                    cube->SetFaceVisible(face);
+                }
+            }
+            if (cube->GetChunkPosition().z == 0 && face == Cube::Face::Back) {
+                if (backChunk != chunks.end() &&
+                    backChunk->second
+                        .GetCubeAtPosition(
+                            glm::ivec3(cube->GetChunkPosition().x, cube->GetChunkPosition().y, CHUNK_WIDTH - 1))
+                        ->IsTransparent()) {
+                    cube->SetFaceVisible(face);
+                }
+            }
+        }
+    }
 }
 
 bool Chunk::FaceHasNeighbor(const std::shared_ptr<Cube>& cube, const Cube::Face& face) const {

@@ -26,6 +26,7 @@ class World {
     /* Getters */
     Color GetAmbiantLightColor() const { return m_AmbiantLightColor; }
     float GetAmbiantLightStrenght() const { return m_AmbiantLightStrenght; }
+    std::unordered_map<glm::ivec2, Chunk, ivec2Hash> GetChunks() const { return m_Chunks; }
 
     /* Setters */
     void SetAmbiantLightColor(const Color& color) { m_AmbiantLightColor = color; }
@@ -34,7 +35,6 @@ class World {
     static std::shared_ptr<World> Create();
 
    private:
-    void UpdateBoundaryFaces(Chunk& chunk, bool recursive = true);
     uint16_t GetChunkIndex(const glm::ivec2& position) const;
 
     char m_RenderDistance;

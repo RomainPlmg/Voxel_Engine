@@ -18,14 +18,10 @@ void World::Init() {
 
     for (int x = -radius; x < radius; x++) {
         for (int y = -radius; y < radius; y++) {
-            m_Chunks[glm::ivec2(x, y)] = Chunk(glm::ivec2(x, y));
-            m_Chunks[glm::ivec2(x, y)].GetCubeAtPosition(glm::ivec3(0, CHUNK_HEIGHT - 1, 0))->Transparent(true);
-            m_Chunks[glm::ivec2(x, y)].Update();
+            auto position = glm::ivec2(x, y);
+            m_Chunks[position] = Chunk(position);
+            m_Chunks[position].Update();
         }
-    }
-
-    for (auto& pair : m_Chunks) {
-        UpdateBoundaryFaces(pair.second);
     }
 }
 
@@ -42,8 +38,7 @@ void World::Update() {
             glm::ivec2 chunkPos = glm::ivec2(playerChunk.x + x, playerChunk.y + y);
             if (m_Chunks.find(chunkPos) == m_Chunks.end()) {
                 m_Chunks[chunkPos] = Chunk(chunkPos);
-                m_Chunks[chunkPos].GetCubeAtPosition(glm::ivec3(0, CHUNK_HEIGHT - 1, 0))->Transparent(true);
-                UpdateBoundaryFaces(m_Chunks[chunkPos]);
+                m_Chunks[chunkPos].Update();
             }
         }
     }
@@ -65,69 +60,6 @@ void World::Draw() {
 }
 
 std::shared_ptr<World> World::Create() { return std::make_shared<World>(); }
-
-void World::UpdateBoundaryFaces(Chunk& chunk, bool recursive) {
-    auto rightChunk = m_Chunks.find(glm::ivec2(chunk.GetWorldPosition().x + 1, chunk.GetWorldPosition().y));  // Right
-    auto leftChunk = m_Chunks.find(glm::ivec2(chunk.GetWorldPosition().x - 1, chunk.GetWorldPosition().y));   // Left
-    auto frontChunk = m_Chunks.find(glm::ivec2(chunk.GetWorldPosition().x, chunk.GetWorldPosition().y + 1));  // Front
-    auto backChunk = m_Chunks.find(glm::ivec2(chunk.GetWorldPosition().x, chunk.GetWorldPosition().y - 1));   // Back
-
-    for (const auto& cube : chunk.GetBoundaryCubes()) {
-        for (int i = 0; i < 6; i++) {
-            auto face = static_cast<Cube::Face>(i);
-            if (cube->GetChunkPosition().x == CHUNK_WIDTH - 1 && face == Cube::Face::Right) {
-                if (rightChunk != m_Chunks.end() &&
-                    rightChunk->second
-                        .GetCubeAtPosition(glm::ivec3(0, cube->GetChunkPosition().y, cube->GetChunkPosition().z))
-                        ->IsTransparent()) {
-                    cube->SetFaceVisible(face);
-                }
-            }
-            if (cube->GetChunkPosition().x == 0 && face == Cube::Face::Left) {
-                if (leftChunk != m_Chunks.end() &&
-                    leftChunk->second
-                        .GetCubeAtPosition(
-                            glm::ivec3(CHUNK_WIDTH - 1, cube->GetChunkPosition().y, cube->GetChunkPosition().z))
-                        ->IsTransparent()) {
-                    cube->SetFaceVisible(face);
-                }
-            }
-            if (cube->GetChunkPosition().z == CHUNK_WIDTH - 1 && face == Cube::Face::Front) {
-                if (frontChunk != m_Chunks.end() &&
-                    frontChunk->second
-                        .GetCubeAtPosition(glm::ivec3(cube->GetChunkPosition().x, cube->GetChunkPosition().y, 0))
-                        ->IsTransparent()) {
-                    cube->SetFaceVisible(face);
-                }
-            }
-            if (cube->GetChunkPosition().z == 0 && face == Cube::Face::Back) {
-                if (backChunk != m_Chunks.end() &&
-                    backChunk->second
-                        .GetCubeAtPosition(
-                            glm::ivec3(cube->GetChunkPosition().x, cube->GetChunkPosition().y, CHUNK_WIDTH - 1))
-                        ->IsTransparent()) {
-                    cube->SetFaceVisible(face);
-                }
-            }
-        }
-    }
-
-    chunk.Update();
-    if (recursive) {
-        if (rightChunk != m_Chunks.end()) {
-            UpdateBoundaryFaces(rightChunk->second, false);
-        }
-        if (leftChunk != m_Chunks.end()) {
-            UpdateBoundaryFaces(leftChunk->second, false);
-        }
-        if (frontChunk != m_Chunks.end()) {
-            UpdateBoundaryFaces(frontChunk->second, false);
-        }
-        if (backChunk != m_Chunks.end()) {
-            UpdateBoundaryFaces(backChunk->second, false);
-        }
-    }
-}
 
 uint16_t World::GetChunkIndex(const glm::ivec2& position) const {
     int chunkX = position.x / CHUNK_WIDTH;

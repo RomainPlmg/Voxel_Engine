@@ -5,13 +5,14 @@
 #ifndef CHUNK_H
 #define CHUNK_H
 
+#include "Cube.h"
 #include "pch.h"
-#include "world/Cube.h"
 
 constexpr auto CHUNK_WIDTH = 8;
 constexpr auto CHUNK_HEIGHT = 16;
 
 class Camera;
+class World;
 
 class Chunk {
    public:
@@ -27,6 +28,7 @@ class Chunk {
     [[nodiscard]] glm::ivec2 GetWorldPosition() const { return m_WorldPosition; }
 
    private:
+    void UpdateBoundaryFaces(std::shared_ptr<World> world);
     bool FaceHasNeighbor(const std::shared_ptr<Cube>& cube, const Cube::Face& face) const;
     bool FaceIsBoundary(const std::shared_ptr<Cube>& cube, const Cube::Face& face);
     void AddFaceToVertices(const std::shared_ptr<Cube>& cube, const Cube::Face& face);
