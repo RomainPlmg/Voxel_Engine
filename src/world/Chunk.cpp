@@ -32,8 +32,7 @@ void Chunk::Update() {
     for (const auto& cube : m_Cubes) {
         for (int i = 0; i < 6; i++) {
             auto face = static_cast<Cube::Face>(i);
-            if ((cube->GetChunkPosition().y == CHUNK_HEIGHT - 1 && face == Cube::Face::Top) ||
-                (cube->GetChunkPosition().y == 0 && face == Cube::Face::Bottom)) {
+            if ((cube->GetChunkPosition().y == CHUNK_HEIGHT - 1 && face == Cube::Face::Top)) {
                 cube->SetFaceVisible(face);
             }
         }
