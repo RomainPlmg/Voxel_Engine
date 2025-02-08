@@ -80,9 +80,6 @@ void Renderer::Render(const std::shared_ptr<ElementBuffer>& elementBuffer,
 
     shader->SetUniformMat4("projMatrix", Application::GetInstance()->GetGUI()->GetViewport()->GetProjMatrix());
     shader->SetUniformMat4("viewMatrix", m_Camera->GetViewMatrix());
-    shader->SetUniformFloat3("ambientLightColor",
-                             Application::GetInstance()->GetWorld()->GetAmbiantLightColor().ToVec3());
-    shader->SetUniformFloat("ambiantLightStrength", Application::GetInstance()->GetWorld()->GetAmbiantLightStrenght());
 
     m_DrawCallCount++;
     glDrawElements(GL_TRIANGLES, elementBuffer->GetCount(), GL_UNSIGNED_INT, nullptr);

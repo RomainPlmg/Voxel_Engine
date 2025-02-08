@@ -21,7 +21,7 @@ class Cube {
     inline glm::ivec3 GetChunkPosition() const { return m_ChunkPosition; }
     inline char GetFacesToDraw() const { return m_FacesToDraw; }
     inline bool IsTransparent() const { return m_IsTransparent; }
-    static std::array<float, 12> GetCubeVertices(const Face& face) { return m_CommonVertices.at(face); }
+    static std::array<float, 24> GetCubeVertices(const Face& face) { return m_CommonVertices.at(face); }
     Color GetColor() const { return m_Color; }
 
     /* Setters */
@@ -31,7 +31,7 @@ class Cube {
     void SetColor(const Color& color);
 
    private:
-    static const std::unordered_map<Cube::Face, std::array<float, 12>> m_CommonVertices;
+    static const std::unordered_map<Cube::Face, std::array<float, 24>> m_CommonVertices;
 
     bool m_IsTransparent;
     Color m_Color;

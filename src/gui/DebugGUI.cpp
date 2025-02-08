@@ -11,6 +11,7 @@
 #include "utils/Log.h"
 #include "utils/Monitor.h"
 #include "utils/Time.h"
+#include "world/Sun.h"
 #include "world/World.h"
 
 DebugGUI::DebugGUI() : m_PlayerPos(glm::vec3(0)), m_DebugLastFrameTime(0), m_DebugFPS(0.0), m_DebugDeltaTime(0.0) {}
@@ -28,6 +29,11 @@ void DebugGUI::Render() {
     static float lightStrenght = 0.8f;
     ImGui::SliderFloat(ICON_MS_LIGHT_MODE " Light strenght", &lightStrenght, 0, 1, "%.3f");
     Application::GetInstance()->GetWorld()->SetAmbiantLightStrenght(lightStrenght);
+
+    // Sun altitude
+    static float altitude = 20.0f;
+    ImGui::SliderFloat(ICON_MS_ALTITUDE " Sun altitude", &altitude, 0, 100, "%.2f");
+    Application::GetInstance()->GetWorld()->GetSun()->SetAltitude(altitude);
 
     // Enable wireframe view
     static bool wireframe = false;

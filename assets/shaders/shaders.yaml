@@ -10,5 +10,22 @@ shader_programs:
         name: vertices
         normalized: false
       - type: float3
+        name: normal
+        normalized: true
+      - type: float3
+        name: color
+        normalized: false
+
+  - name: LIGHT_SOURCE
+    shaders:
+      - type: vertex
+        file: light_source.vert
+      - type: fragment
+        file: light_source.frag
+    layout:
+      - type: float3
+        name: vertices
+        normalized: false
+      - type: float3
         name: color
         normalized: false

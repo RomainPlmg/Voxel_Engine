@@ -4,15 +4,20 @@
 
 #include "World.h"
 
+#include "Chunk.h"
+#include "Player.h"
+#include "Sun.h"
 #include "core/Application.h"
 #include "gui/GUI.h"
 
 World::World() : m_RenderDistance(8), m_AmbiantLightStrenght(1.0f) {
     m_Player = Player::Create(glm::vec3(0.0f, CHUNK_HEIGHT + 2, 0.0f));
+    m_Sun = Sun::Create();
 }
 
 void World::Init() {
     m_Player->Init();
+    m_Sun->Init();
 
     int radius = m_RenderDistance / 2;
 
@@ -27,6 +32,7 @@ void World::Init() {
 
 void World::Update() {
     m_Player->Update();
+    m_Sun->Update();
     Application::GetInstance()->GetGUI()->GetDebugGUI()->SetPlayerPosition(m_Player->GetPosition());
 
     glm::ivec2 playerChunk = glm::ivec2(std::floor((m_Player->GetPosition().x + CHUNK_WIDTH / 2.0f) / CHUNK_WIDTH),
@@ -54,6 +60,7 @@ void World::Update() {
 }
 
 void World::Draw() {
+    m_Sun->Draw();
     for (auto& pair : m_Chunks) {
         pair.second.Draw();
     }

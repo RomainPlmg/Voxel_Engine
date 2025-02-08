@@ -6,9 +6,11 @@
 #define WORLD_H
 
 #include "Chunk.h"
-#include "Player.h"
 #include "pch.h"
 #include "utils/Color.h"
+
+class Player;
+class Sun;
 
 struct ivec2Hash {
     size_t operator()(const glm::ivec2& v) const { return std::hash<int>()(v.x) ^ (std::hash<int>()(v.y) << 1); }
@@ -27,6 +29,8 @@ class World {
     Color GetAmbiantLightColor() const { return m_AmbiantLightColor; }
     float GetAmbiantLightStrenght() const { return m_AmbiantLightStrenght; }
     std::unordered_map<glm::ivec2, Chunk, ivec2Hash> GetChunks() const { return m_Chunks; }
+    std::shared_ptr<Player> GetPlayer() const { return m_Player; }
+    std::shared_ptr<Sun> GetSun() const { return m_Sun; }
 
     /* Setters */
     void SetAmbiantLightColor(const Color& color) { m_AmbiantLightColor = color; }
@@ -42,6 +46,7 @@ class World {
     float m_AmbiantLightStrenght;
     std::unordered_map<glm::ivec2, Chunk, ivec2Hash> m_Chunks;
     std::shared_ptr<Player> m_Player;
+    std::shared_ptr<Sun> m_Sun;
 };
 
 #endif  // WORLD_H

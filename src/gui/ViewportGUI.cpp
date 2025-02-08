@@ -11,6 +11,7 @@
 #include "core/Window.h"
 #include "events/EventDispatcher.h"
 #include "gfx/Buffer.h"
+#include "gfx/Camera.h"
 #include "gfx/GraphicContext.h"
 #include "gfx/Renderer.h"
 #include "imgui.h"

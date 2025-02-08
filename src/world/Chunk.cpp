@@ -4,6 +4,7 @@
 
 #include "Chunk.h"
 
+#include "Sun.h"
 #include "World.h"
 #include "core/Application.h"
 #include "gfx/Renderer.h"
@@ -64,6 +65,14 @@ void Chunk::Draw() {
         "modelMatrix",
         glm::translate(glm::mat4(1.0f), glm::vec3(static_cast<float>(m_WorldPosition.x * CHUNK_WIDTH), 0.0f,
                                                   static_cast<float>(m_WorldPosition.y * CHUNK_WIDTH))));
+    m_Shader->SetUniformFloat3("ambientLightColor",
+                               Application::GetInstance()->GetWorld()->GetAmbiantLightColor().ToVec3());
+    m_Shader->SetUniformFloat("ambiantLightStrength",
+                              Application::GetInstance()->GetWorld()->GetAmbiantLightStrenght());
+
+    // Set the sun position in the shader
+    auto sun = Application::GetInstance()->GetWorld()->GetSun();
+    m_Shader->SetUniformFloat3("lightPos", sun->GetPosition());
 
     const auto vbo = VertexBuffer::Create(m_Vertices.data(), m_Vertices.size() * sizeof(m_Vertices[0]));
     vbo->SetLayout(m_Shader->GetBufferLayout());
@@ -235,11 +244,16 @@ bool Chunk::FaceIsBoundary(const std::shared_ptr<Cube>& cube, const Cube::Face& 
 
 void Chunk::AddFaceToVertices(const std::shared_ptr<Cube>& cube, const Cube::Face& face) {
     const auto vertices = Cube::GetCubeVertices(face);
-    for (int i = 0; i < Cube::GetCubeVertices(face).size(); i = i + 3) {
+    for (int i = 0; i < Cube::GetCubeVertices(face).size(); i = i + 6) {
         // Vertex coordinates
         m_Vertices.push_back(vertices[i] + cube->GetChunkPosition().x);      // X
         m_Vertices.push_back(vertices[i + 1] + cube->GetChunkPosition().y);  // Y
         m_Vertices.push_back(vertices[i + 2] + cube->GetChunkPosition().z);  // Z
+
+        // Normals
+        m_Vertices.push_back(vertices[i + 3] + cube->GetChunkPosition().x);  // X
+        m_Vertices.push_back(vertices[i + 4] + cube->GetChunkPosition().y);  // Y
+        m_Vertices.push_back(vertices[i + 5] + cube->GetChunkPosition().z);  // Z
 
         // Vertex colors
         Color color = cube->GetColor().ToGLColor();
